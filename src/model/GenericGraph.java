@@ -4,26 +4,32 @@ import java.util.*;
 
 public class GenericGraph<T> {
 
-	private Map<Vertex, ArrayList<Edge>> graphMap;
+	private ArrayList<Vertex<T>> vertices;
 
-	public GenericGraph(ArrayList<Vertex> vertices) {
+	public void addVertex(T value) {
 
-		// Creating graph using Adjacency List---------------------------
-		graphMap = new HashMap<Vertex, ArrayList<Edge>>();
-		for (int i = 0; i < vertices.size(); i++) {
-
-			ArrayList<Edge> neighbours = new ArrayList<Edge>();
-			graphMap.put(vertices.get(i), neighbours);
-
-		}
+		vertices.add(new Vertex<T>(value));
 
 	}
 
-	// Add edge to adjacency list
-	public void addEdgesToList() {
+	public void addEdge(Vertex<T> from, Vertex<T> to, T value) {
 
-		
-		
+		Edge<T> e1 = new Edge<T>(from, to, value);
+		Edge<T> e2 = new Edge<T>(to, from, value);
+		from.addEdge(e1);
+		to.addEdge(e2);
+
+	}
+
+	public Vertex<T> getVertex(T value) {
+
+		for (int i = 0; i < vertices.size(); i++) {
+			if (vertices.get(i).getValue().equals(value)) {
+				return vertices.get(i);
+			}
+		}
+		return null;
+
 	}
 
 }
