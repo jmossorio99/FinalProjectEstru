@@ -3,30 +3,25 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="907.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.StartingWindowController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="907.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.StartingWindowController">
    <children>
       <Label layoutX="77.0" layoutY="164.0" text="Origin:" />
       <Label layoutX="335.0" layoutY="164.0" text="Destiny:" />
-      <TextField fx:id="OriginButton" layoutX="131.0" layoutY="160.0" />
-      <TextField fx:id="DestinyButton" layoutX="389.0" layoutY="160.0" />
       <Label layoutX="345.0" layoutY="29.0" prefHeight="43.0" prefWidth="217.0" text="Travel Agency">
          <font>
             <Font size="32.0" />
          </font>
       </Label>
       <Button fx:id="SearchButton" layoutX="807.0" layoutY="160.0" mnemonicParsing="false" onAction="#searchClicked" text="Search" />
-      <ChoiceBox fx:id="FilterChoiceBox" layoutX="621.0" layoutY="160.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="filterChoiceBox" layoutX="621.0" layoutY="160.0" prefWidth="150.0" />
       <Label layoutX="568.0" layoutY="164.0" text="Filter by:" />
       <Label layoutX="151.0" layoutY="273.0" text="Route:" />
-      <TextArea fx:id="RouteTextArea" layoutX="246.0" layoutY="239.0" prefHeight="85.0" prefWidth="467.0" />
-      <Label layoutX="145.0" layoutY="354.0" text="Total of " />
-      <TextField layoutX="246.0" layoutY="350.0" prefHeight="25.0" prefWidth="131.0" />
-      <Label fx:id="QuantityTextField" layoutX="199.0" layoutY="354.0" />
+      <Label layoutX="146.0" layoutY="489.0" text="Total of " />
+      <ChoiceBox fx:id="originChoiceBox" layoutX="124.0" layoutY="160.0" prefWidth="150.0" />
+      <ChoiceBox fx:id="destinyChoiceBox" layoutX="391.0" layoutY="160.0" prefWidth="150.0" />
+      <Label fx:id="totalLabel" layoutX="226.0" layoutY="489.0" />
    </children>
 </AnchorPane>

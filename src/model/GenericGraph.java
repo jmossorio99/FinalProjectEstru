@@ -22,7 +22,7 @@ public class GenericGraph<T> {
 	// Add edge to adjacency list
 	public void addEdgesToList() {
 
-
+		
 		
 	}
 

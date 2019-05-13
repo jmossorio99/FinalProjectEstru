@@ -10,43 +10,36 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 
-public class StartingWindowController implements Initializable{
+public class StartingWindowController implements Initializable {
 
-	ObservableList<String> OL = FXCollections.observableArrayList("Time","Money","Distance");
-	
+	ObservableList<String> OL = FXCollections.observableArrayList("Time", "Money", "Distance");
+
 	@FXML
-    private TextField OriginButton;
+	private Button SearchButton;
 
-    @FXML
-    private TextField DestinyButton;
+	@FXML
+	private ChoiceBox<String> filterChoiceBox;
 
-    @FXML
-    private Button SearchButton;
+	@FXML
+	private ChoiceBox<String> originChoiceBox;
 
-    @FXML
-    private ChoiceBox<String> FilterChoiceBox;
+	@FXML
+	private ChoiceBox<String> destinyChoiceBox;
 
-    @FXML
-    private TextArea RouteTextArea;
+	@FXML
+	private Label totalLabel;
 
-    @FXML
-    private Label QuantityTextField;
+	@FXML
+	void searchClicked(ActionEvent event) {
 
-    @FXML
-    void searchClicked(ActionEvent event) {
+	}
 
-    }
-	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-	
-		
-		FilterChoiceBox.setItems(OL);
-		
-		
+
+		filterChoiceBox.setItems(OL);
+
 	}
 
 }
