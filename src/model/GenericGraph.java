@@ -57,16 +57,65 @@ public class GenericGraph<T, K> implements IGenericGraph<T, K> {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public int[] BFS(int origin) {
+	public ArrayList<T> BFS(int origin) {
 
-		return null;
+		T temp = null;
+		ArrayList<T> ret = new ArrayList<T>();
+		boolean[] visited = new boolean[vertices.size()];
+		LinkedList<T> queue = new LinkedList<T>();
+
+		visited[origin] = true;
+		queue.add(vertices.get(origin).getValue());
+		while (queue.size() != 0) {
+
+			temp = queue.poll();
+			ret.add(temp);
+
+			Iterator<T> it = (Iterator<T>) getVertex(temp).getAdjacencyList().listIterator();
+			while (it.hasNext()) {
+
+				Vertex<T, K> v = ((Edge<T, K>) it.next()).getVertexFrom();
+				int verIndex = findVertexIndex(v);
+				T n = v.getValue();
+				if (!visited[verIndex]) {
+					visited[verIndex] = true;
+					queue.add(n);
+				}
+
+			}
+
+		}
+		return ret;
 	}
 
 	@Override
 	public int[] DFS() {
 
 		return null;
+	}
+
+	public Vertex<T, K> getVertex(T value) {
+
+		for (int j = 0; j < vertices.size(); j++) {
+			if (vertices.get(j).getValue().equals(value)) {
+				return vertices.get(j);
+			}
+		}
+		return null;
+
+	}
+
+	public int findVertexIndex(Vertex<T, K> v) {
+
+		for (int i = 0; i < vertices.size(); i++) {
+			if (vertices.get(i).equals(v)) {
+				return i;
+			}
+		}
+		return -1;
+
 	}
 
 }
