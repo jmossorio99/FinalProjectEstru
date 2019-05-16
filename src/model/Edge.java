@@ -5,11 +5,12 @@ public class Edge<T, K> {
 	private Vertex<T, K> vertexTo;
 	private Vertex<T, K> vertexFrom;
 	private K data;
+	private int id;
 
-	public Edge(Vertex<T, K> v, Vertex<T, K> v2, K data) {
+	public Edge(Vertex<T, K> v, Vertex<T, K> v2, K data, int id) {
 
-		setVertexTo(v);
-		setVertexFrom(v2);
+		setVertexFrom(v);
+		setVertexTo(v2);
 		this.setData(data);
 
 	}
@@ -30,12 +31,20 @@ public class Edge<T, K> {
 		this.vertexFrom = vertexFrom;
 	}
 
-	public Object getData() {
+	public K getData() {
 		return data;
 	}
 
 	public void setData(K data) {
 		this.data = data;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 }
