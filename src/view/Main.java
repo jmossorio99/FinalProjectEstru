@@ -11,10 +11,6 @@ public class Main extends Application {
 	public static void main(String[] args) {
 
 		launch();
-		GenericGraph<String> g = new GenericGraph<>();
-		g.addVertex("Bogota");
-		g.addVertex("Madrid");
-		g.addEdge(g.getVertex("Bogota"), g.getVertex("Madrid"), 2700000, 10, 4000);
 
 	}
 

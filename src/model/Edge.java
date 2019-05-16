@@ -1,61 +1,41 @@
 package model;
 
-public class Edge<T> {
+public class Edge<T, K> {
 
-	private Vertex<T> vertexTo;
-	private Vertex<T> vertexFrom;
-	private double price;
-	private int time;
-	private double distance;
+	private Vertex<T, K> vertexTo;
+	private Vertex<T, K> vertexFrom;
+	private K data;
 
-	public Edge(Vertex<T> v, Vertex<T> v2, double price, int time, double distance) {
+	public Edge(Vertex<T, K> v, Vertex<T, K> v2, K data) {
 
 		setVertexTo(v);
 		setVertexFrom(v2);
-		this.price = price;
-		this.time = time;
-		this.distance = distance;
+		this.setData(data);
 
 	}
 
-	public Vertex<T> getVertexTo() {
+	public Vertex<T, K> getVertexTo() {
 		return vertexTo;
 	}
 
-	public void setVertexTo(Vertex<T> vertexTo) {
+	public void setVertexTo(Vertex<T, K> vertexTo) {
 		this.vertexTo = vertexTo;
 	}
 
-	public Vertex<T> getVertexFrom() {
+	public Vertex<T, K> getVertexFrom() {
 		return vertexFrom;
 	}
 
-	public void setVertexFrom(Vertex<T> vertexFrom) {
+	public void setVertexFrom(Vertex<T, K> vertexFrom) {
 		this.vertexFrom = vertexFrom;
 	}
 
-	public double getPrice() {
-		return price;
+	public Object getData() {
+		return data;
 	}
 
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
-	public int getTime() {
-		return time;
-	}
-
-	public void setTime(int time) {
-		this.time = time;
-	}
-
-	public double getDistance() {
-		return distance;
-	}
-
-	public void setDistance(double distance) {
-		this.distance = distance;
+	public void setData(K data) {
+		this.data = data;
 	}
 
 }

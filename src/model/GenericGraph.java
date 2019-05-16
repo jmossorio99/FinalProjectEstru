@@ -2,34 +2,41 @@ package model;
 
 import java.util.*;
 
-public class GenericGraph<T> {
+public class GenericGraph<T, K> implements IGenericGraph<T, K> {
 
-	private ArrayList<Vertex<T>> vertices;
+	private ArrayList<Vertex<T, K>> vertices;
+	private int numOfEdges = 0;
 
-	public void addVertex(T value) {
-
-		vertices.add(new Vertex<T>(value));
-
-	}
-
-	public void addEdge(Vertex<T> from, Vertex<T> to, double price, int time, double distance) {
-
-		Edge<T> e1 = new Edge<T>(from, to, price, time, distance);
-		Edge<T> e2 = new Edge<T>(to, from, price, time, distance);
-		from.addEdge(e1);
-		to.addEdge(e2);
+	@Override
+	public void insertVertex(T value) {
 
 	}
 
-	public Vertex<T> getVertex(T value) {
+	@Override
+	public void insertEdge(int from, int to, K data) {
 
-		for (int i = 0; i < vertices.size(); i++) {
-			if (vertices.get(i).getValue().equals(value)) {
-				return vertices.get(i);
-			}
-		}
+	}
+
+	@Override
+	public void deleteVertex(int v) {
+
+	}
+
+	@Override
+	public void deleteEdge(int from, int to, int id) {
+
+	}
+
+	@Override
+	public int[] BFS(int origin) {
+
 		return null;
+	}
 
+	@Override
+	public int[] DFS() {
+
+		return null;
 	}
 
 }
