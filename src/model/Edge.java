@@ -2,8 +2,8 @@ package model;
 
 public class Edge<T, K> {
 
-	private Vertex<T, K> vertexTo;
 	private Vertex<T, K> vertexFrom;
+	private Vertex<T, K> vertexTo;
 	private K data;
 	private int id;
 

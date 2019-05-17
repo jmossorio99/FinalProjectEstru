@@ -4,13 +4,11 @@ public class Data {
 
 	private double price;
 	private int time;
-	private double distance;
-
-	public Data(double price, int time, double distance) {
+	
+	public Data(double price, int time) {
 
 		this.price = price;
 		this.time = time;
-		this.distance = distance;
 
 	}
 
@@ -28,14 +26,6 @@ public class Data {
 
 	public void setTime(int time) {
 		this.time = time;
-	}
-
-	public double getDistance() {
-		return distance;
-	}
-
-	public void setDistance(double distance) {
-		this.distance = distance;
 	}
 
 }
