@@ -17,7 +17,7 @@ public class Main extends Application {
 	public void start(Stage window) throws Exception {
 
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/view/StartingWindowView.fxml"));
+		loader.setLocation(getClass().getResource("/view/MainWindow.fxml"));
 		Scene scene = new Scene(loader.load());
 		window.setScene(scene);
 		window.show();
