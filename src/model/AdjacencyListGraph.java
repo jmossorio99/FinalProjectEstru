@@ -12,6 +12,7 @@ public class AdjacencyListGraph<T, K> implements IGenericGraph<T, K> {
 
 	public AdjacencyListGraph(boolean isDirected) {
 		directedGraph = isDirected;
+		vertices = new ArrayList<Vertex<T, K>>();
 	}
 
 	@Override
@@ -91,6 +92,7 @@ public class AdjacencyListGraph<T, K> implements IGenericGraph<T, K> {
 
 		T temp = null;
 		ArrayList<T> ret = new ArrayList<T>();
+//		HashMap<String, Boolean> map = new HashMap<String, Boolean>();
 		boolean[] visited = new boolean[vertices.size()];
 		LinkedList<T> queue = new LinkedList<T>();
 
@@ -104,7 +106,8 @@ public class AdjacencyListGraph<T, K> implements IGenericGraph<T, K> {
 			Iterator<T> it = (Iterator<T>) getVertex(temp).getAdjacencyList().listIterator();
 			while (it.hasNext()) {
 
-				Vertex<T, K> v = ((Edge<T, K>) it.next()).getVertexFrom();
+				System.out.println(1);
+				Vertex<T, K> v = ((Edge<T, K>) it.next()).getVertexTo();
 				int verIndex = findVertexIndex(v);
 				T n = v.getValue();
 				if (!visited[verIndex]) {
@@ -155,6 +158,12 @@ public class AdjacencyListGraph<T, K> implements IGenericGraph<T, K> {
 			list.get(i).getVertexTo().deleteEdge(id);
 
 		}
+
+	}
+
+	public ArrayList<Vertex<T, K>> getVertices() {
+
+		return vertices;
 
 	}
 

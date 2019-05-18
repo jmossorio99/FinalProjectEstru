@@ -60,17 +60,17 @@ public class Vertex<T, K> implements IVertex<T, K> {
 		}
 
 	}
-	
+
 	public void updateAdjacencyList(Vertex<T, K> vertex) {
-		
-		for(Edge<T, K> e : adjacency) {
-			
-			if (e.getVertexTo().equals(vertex)) {
-				adjacency.remove(e);
+
+		for (int i = 0; i < adjacency.size(); i++) {
+
+			if (adjacency.get(i).getVertexTo().equals(vertex)) {
+				adjacency.remove(i);
 			}
-			
+
 		}
-		
+
 	}
 
 }
