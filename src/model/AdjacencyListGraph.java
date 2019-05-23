@@ -127,12 +127,65 @@ public class AdjacencyListGraph<T, K extends Comparable> implements IGenericGrap
 		return null;
 	}
 
-	public AdjacencyListGraph<T, K> kruskal() {
-		AdjacencyListGraph<T, K> newGraph = new AdjacencyListGraph<>(directedGraph);
-		
-		return newGraph;
+	public void prepareKruskal(PriorityQueue<Edge<T,K>> queue, ArrayList<LinkedList<Vertex<T,K>>> DS) {
+		for(int i = 0; i < vertices.size(); i++) {
+			DS.get(i).add(vertices.get(i));
+		}
+		for(int i = 0; i < vertices.size(); i++) {
+			ArrayList<Edge<T, K>> partial = vertices.get(i).getAdjacencyList();
+			for(int j = 0; j < partial.size(); j++) {
+				if(!queue.contains(partial.get(j))) {
+					queue.add(partial.get(j));
+				}
+			}
+		}
 	}
 
+	public AdjacencyListGraph<T, K> kruskal() throws VertexDoesNotExistException{
+		AdjacencyListGraph<T, K> newGraph = new AdjacencyListGraph<>(directedGraph);
+		PriorityQueue<Edge<T,K>> queue = new PriorityQueue<Edge<T,K>>(numOfEdges, new CompareEdgesByData());
+		ArrayList<LinkedList<Vertex<T,K>>> DS = new ArrayList<LinkedList<Vertex<T,K>>>();
+		prepareKruskal(queue, DS);
+		while(!queue.isEmpty()) {
+			Edge<T, K> current = queue.poll();
+			if(!isConected(current.getVertexFrom(), current.getVertexTo(), DS)) {
+				Vertex<T,K> v1 = current.getVertexFrom();
+				Vertex<T,K> v2 = current.getVertexTo();
+				newGraph.insertVertex(v1.getValue());
+				newGraph.insertVertex(v2.getValue());
+				newGraph.insertEdge((int) v1.getValue(), (int) v2.getValue(), current.getData());
+				connect(v1, v2, DS);
+			}
+		}
+		return newGraph;
+	}
+	
+	public boolean isConected(Vertex<T, K> v1, Vertex<T, K> v2, ArrayList<LinkedList<Vertex<T, K>>> DS) {
+		boolean conected = false;
+		for(int i = 0; i < DS.size(); i++) {
+			LinkedList<Vertex<T, K>> actual = (LinkedList<Vertex<T,K>>) DS.get(i);
+			if(actual.contains(v1) && actual.contains(v2)) {
+				conected = true;
+			}
+		}
+		return conected;
+	}
+	
+	public void connect(Vertex<T, K> v1, Vertex<T, K> v2, ArrayList<LinkedList<Vertex<T, K>>> DS) {
+		LinkedList<Vertex<T, K>> toConnect1 = null;
+		LinkedList<Vertex<T, K>> toConnect2 = null;
+		for(int i = 0; i < DS.size(); i++) {
+			LinkedList<Vertex<T, K>> current = (LinkedList<Vertex<T,K>>) DS.get(i);
+			if(current.contains(v1)) {
+				toConnect1 = current;
+			}else if(current.contains(v2)){
+				toConnect2 = current;
+			}
+		}
+		toConnect1.addAll(toConnect2);
+		DS.remove(toConnect2);
+	}
+	
 	public Vertex<T, K> getVertex(T value) {
 
 		for (int j = 0; j < vertices.size(); j++) {
