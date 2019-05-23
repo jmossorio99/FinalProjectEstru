@@ -1,6 +1,6 @@
 package model;
 
-public class Data implements Comparable {
+public class Data implements Comparable<Data> {
 
 	private double price;
 	private int time;
@@ -27,9 +27,10 @@ public class Data implements Comparable {
 	public void setTime(int time) {
 		this.time = time;
 	}
-
+	
 	@Override
-	public int compareTo(Object arg0) {
+	public int compareTo(Data arg0) {
+		// TODO Auto-generated method stub
 		return 0;
 	}
 
