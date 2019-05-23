@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-public interface IVertex<T, K extends Comparable> {
+public interface IVertex<T, K extends Comparable<K>> {
 
 	public void addEdge(Edge<T, K> e);
 	public void deleteEdge(int id);

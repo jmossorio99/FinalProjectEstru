@@ -4,7 +4,7 @@ import java.util.*;
 
 import exceptions.VertexDoesNotExistException;
 
-public class AdjacencyListGraph<T, K extends Comparable> implements IGenericGraph<T, K> {
+public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericGraph<T, K> {
 
 	private ArrayList<Vertex<T, K>> vertices;
 	private int numOfEdges = 0;
@@ -129,13 +129,29 @@ public class AdjacencyListGraph<T, K extends Comparable> implements IGenericGrap
 
 	public void prepareKruskal(PriorityQueue<Edge<T,K>> queue, ArrayList<LinkedList<Vertex<T,K>>> DS) {
 		for(int i = 0; i < vertices.size(); i++) {
-			DS.get(i).add(vertices.get(i));
+			LinkedList<Vertex<T,K>> created = new LinkedList<Vertex<T,K>>();
+			created.add(vertices.get(i));
+			DS.add(created);
 		}
 		for(int i = 0; i < vertices.size(); i++) {
 			ArrayList<Edge<T, K>> partial = vertices.get(i).getAdjacencyList();
 			for(int j = 0; j < partial.size(); j++) {
-				if(!queue.contains(partial.get(j))) {
-					queue.add(partial.get(j));
+				if(directedGraph) {
+					if(!queue.contains(partial.get(j))) {
+						queue.add(partial.get(j));
+					}
+				}else {
+					boolean contained = false;
+					Iterator<Edge<T,K>> it = queue.iterator();
+					while(it.hasNext()) {
+						Edge<T,K> comparison = it.next();
+						if(comparison.getId() == partial.get(j).getId()) {
+							contained = true;
+						}
+					}
+					if(!contained) {
+						queue.add(partial.get(j));
+					}
 				}
 			}
 		}
@@ -151,8 +167,12 @@ public class AdjacencyListGraph<T, K extends Comparable> implements IGenericGrap
 			if(!isConected(current.getVertexFrom(), current.getVertexTo(), DS)) {
 				Vertex<T,K> v1 = current.getVertexFrom();
 				Vertex<T,K> v2 = current.getVertexTo();
-				newGraph.insertVertex(v1.getValue());
-				newGraph.insertVertex(v2.getValue());
+				if(newGraph.getVertex(v1.getValue()) == null) {
+					newGraph.insertVertex(v1.getValue());
+				}
+				if(newGraph.getVertex(v2.getValue()) == null) {
+					newGraph.insertVertex(v2.getValue());
+				}
 				newGraph.insertEdge((int) v1.getValue(), (int) v2.getValue(), current.getData());
 				connect(v1, v2, DS);
 			}

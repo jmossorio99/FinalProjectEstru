@@ -2,7 +2,7 @@ package model;
 
 import java.util.ArrayList;
 
-public class Vertex<T, K extends Comparable> implements IVertex<T, K> {
+public class Vertex<T, K extends Comparable<K>> implements IVertex<T, K> {
 
 	private T value;
 	private ArrayList<Edge<T, K>> adjacency;

@@ -1,7 +1,6 @@
 package model;
 
-
-public class Edge<T, K extends Comparable>{
+public class Edge<T, K extends Comparable<K>> {
 
 	private Vertex<T, K> vertexFrom;
 	private Vertex<T, K> vertexTo;
@@ -48,8 +47,9 @@ public class Edge<T, K extends Comparable>{
 		this.id = id;
 	}
 
-	public int compareTo(Edge o2) {
-		return this.data.compareTo(o2.getData());
+	@SuppressWarnings("unchecked")
+	public int compareTo(Edge<T, K> o2) {
+		return this.data.compareTo((K) o2.getData());
 	}
 
 }
