@@ -4,7 +4,7 @@ import java.util.*;
 
 import exceptions.VertexDoesNotExistException;
 
-public class AdjacencyListGraph<T, K> implements IGenericGraph<T, K> {
+public class AdjacencyListGraph<T, K extends Comparable> implements IGenericGraph<T, K> {
 
 	private ArrayList<Vertex<T, K>> vertices;
 	private int numOfEdges = 0;
@@ -125,6 +125,12 @@ public class AdjacencyListGraph<T, K> implements IGenericGraph<T, K> {
 	public int[] DFS() {
 
 		return null;
+	}
+
+	public AdjacencyListGraph<T, K> kruskal() {
+		AdjacencyListGraph<T, K> newGraph = new AdjacencyListGraph<>(directedGraph);
+		
+		return newGraph;
 	}
 
 	public Vertex<T, K> getVertex(T value) {
