@@ -173,7 +173,7 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 				if(newGraph.getVertex(v2.getValue()) == null) {
 					newGraph.insertVertex(v2.getValue());
 				}
-				newGraph.insertEdge((int) v1.getValue(), (int) v2.getValue(), current.getData());
+				newGraph.insertEdge(findVertexIndex(v1), findVertexIndex(v2), current.getData());
 				connect(v1, v2, DS);
 			}
 		}
