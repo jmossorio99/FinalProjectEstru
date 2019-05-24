@@ -205,5 +205,19 @@ class AdjacencyListGraphTest {
 		}
 		
 	}
+	
+	@Test
+	void testDFS() {
+		
+		setUp3();
+		ArrayList<String> list = new ArrayList<String>();
+		list.add("Cali");
+		list.add("Bogotá");
+		list.add("Medellín");
+		list.add("Pasto");
+		list.add("Barranquilla");
+		assertEquals(list, graph.DFS());
+		
+	}
 
 }
