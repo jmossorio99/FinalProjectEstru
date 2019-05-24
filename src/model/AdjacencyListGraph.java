@@ -246,4 +246,8 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 
 	}
 
+	public int getNumOfEdges() {
+		return numOfEdges;
+	}
+
 }
