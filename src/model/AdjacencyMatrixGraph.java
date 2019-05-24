@@ -16,6 +16,9 @@ public class AdjacencyMatrixGraph<T,K extends Comparable<K>> implements IGeneric
 	public AdjacencyMatrixGraph(boolean isDirected) {
 		this.isDirected=isDirected;
 		numberOfEdge=0;
+		vertexOrder = new ArrayList<Vertex<T,K>>();
+ 		edgeOrder = new ArrayList<Edge<T,K>>();
+		
 	}
 	
 	@Override
@@ -124,19 +127,34 @@ public class AdjacencyMatrixGraph<T,K extends Comparable<K>> implements IGeneric
 		
 		PriorityQueue<Edge<T, K>>[][] newAdyacencyMatrix = new PriorityQueue[numberOfVertices][numberOfVertices];
 
+		if(adyacencyMatrix==null) {
+			PriorityQueue<Edge<T, K>> temp = new PriorityQueue<Edge<T, K>>(1000, new CompareEdgesByData());
+		    for(int i=0;i<newAdyacencyMatrix.length;i++) {
+		    	for(int j=0;j<newAdyacencyMatrix.length;j++) {
+		    		newAdyacencyMatrix[i][j]=temp;
+		    	}
+		    }
+		   
+		    adyacencyMatrix=newAdyacencyMatrix;
+		    
+		}
+		else {
 		for (int i = 0; i < adyacencyMatrix.length; i++) {
 			for (int j = 0; j < adyacencyMatrix.length; j++) {
 
 				newAdyacencyMatrix[i][j] = adyacencyMatrix[i][j];
 
 				if (i == adyacencyMatrix.length - 1 || j == adyacencyMatrix.length - 1) {
-					PriorityQueue<Edge<T, K>> temp = new PriorityQueue<Edge<T, K>>(Integer.MAX_VALUE, new CompareEdgesByData());
+					PriorityQueue<Edge<T, K>> temp = new PriorityQueue<Edge<T, K>>(1000, new CompareEdgesByData());
 					newAdyacencyMatrix[i][j] = temp;
 					
 				}
 			}
+		  }
+		
+		adyacencyMatrix=newAdyacencyMatrix;
+		
 		}
-
 	}
 
 	public void deleteVertexFromTheMatrix(int position,int newSize) {
@@ -166,6 +184,19 @@ public class AdjacencyMatrixGraph<T,K extends Comparable<K>> implements IGeneric
 			}
 		}
 		
+		adyacencyMatrix=newAdyacencyMatrix;
+		
+	}
+	
+	public String verifyMessaje() {
+		String messaje="";
+		for(int i=0;i<edgeOrder.size();i++) {
+		
+			messaje=edgeOrder.get(i).getData().toString()+"\n";
+			
+		}
+		
+		return messaje;
 	}
 
 }
