@@ -11,7 +11,7 @@ import model.*;
 
 class AdjacencyListGraphTest {
 
-	private AdjacencyListGraph<String, Data> graph;
+	private AdjacencyListGraph graph;
 
 	// empty directed graph
 	private void setUp1() {
@@ -84,6 +84,27 @@ class AdjacencyListGraphTest {
 
 	}
 
+	private void setUp6() {
+		graph = new AdjacencyListGraph<String, Integer>(false);
+		graph.insertVertex("a");
+		graph.insertVertex("b");
+		graph.insertVertex("c");
+		graph.insertVertex("d");
+		graph.insertVertex("e");
+		try {
+			graph.insertEdge(0, 1, 1);
+			graph.insertEdge(0, 2, 4);
+			graph.insertEdge(0, 4, 2);
+			graph.insertEdge(1, 3, 3);
+			graph.insertEdge(1, 4, 3);
+			graph.insertEdge(2, 3, 1);
+			graph.insertEdge(2, 4, 3);
+			graph.insertEdge(3, 4, 2);
+		} catch (VertexDoesNotExistException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@Test
 	void testInsertVertex() {
 		setUp1();
@@ -169,6 +190,20 @@ class AdjacencyListGraphTest {
 		list.add("Pasto");
 		assertEquals(list, graph.BFS(0));
 
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	void testKruskal() {
+		
+		setUp6();
+		try {
+			AdjacencyListGraph<String, Integer> newGraph = (AdjacencyListGraph<String, Integer>)graph.kruskal();
+			assertEquals(4, newGraph.getNumOfEdges());
+		} catch (VertexDoesNotExistException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 }

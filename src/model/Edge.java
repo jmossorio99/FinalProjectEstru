@@ -12,6 +12,7 @@ public class Edge<T, K extends Comparable<K>> {
 		setVertexFrom(v);
 		setVertexTo(v2);
 		this.setData(data);
+		this.id = id;
 
 	}
 
