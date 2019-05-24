@@ -37,7 +37,7 @@ public class AdjacencyMatrixGraph<T,K extends Comparable<K>> implements IGeneric
 	public void deleteVertex(int v) {
 		
 		vertexOrder.remove(v);
-		deleteVertexFromTheMatrix(v);
+		deleteVertexFromTheMatrix(v,vertexOrder.size());
 
 	}
 
@@ -71,16 +71,39 @@ public class AdjacencyMatrixGraph<T,K extends Comparable<K>> implements IGeneric
 				if (i == adyacencyMatrix.length - 1 || j == adyacencyMatrix.length - 1) {
 					PriorityQueue<Edge<T, K>> temp = new PriorityQueue<Edge<T, K>>(Integer.MAX_VALUE, new CompareEdgesByData());
 					newAdyacencyMatrix[i][j] = temp;
-					// no one care x2
+					
 				}
 			}
 		}
 
 	}
 
-	public void deleteVertexFromTheMatrix(int position) {
+	public void deleteVertexFromTheMatrix(int position,int newSize) {
 		
+		PriorityQueue<Edge<T, K>>[][] newAdyacencyMatrix = new PriorityQueue[newSize][newSize];
 		
+		for(int i=0;i<adyacencyMatrix.length;i++) {
+			for(int j =0;j<adyacencyMatrix.length;j++) {
+				
+				if(!(i==position || j==position)) {
+					
+					if(i<position && j<position) {
+						newAdyacencyMatrix[i][j]=adyacencyMatrix[i][j];
+					}
+					else if(j>position && i<position) {
+						newAdyacencyMatrix[i][j-1]=adyacencyMatrix[i][j];
+					}
+					else if(i>position && j<position) {
+						newAdyacencyMatrix[i-1][j]=adyacencyMatrix[i][j];
+					}
+					else {
+						newAdyacencyMatrix[i-1][j-1]=adyacencyMatrix[i][j];
+					}
+					
+				}
+				
+			}
+		}
 		
 	}
 	
