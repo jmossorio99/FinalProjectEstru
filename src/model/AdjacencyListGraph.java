@@ -129,7 +129,7 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 
 	}
 
-	public ArrayList<T> DFSRecursive(boolean[] visited, int n, ArrayList<T> ret) {
+	public void DFSRecursive(boolean[] visited, int n, ArrayList<T> ret) {
 
 		visited[n] = true;
 		ret.add(vertices.get(n).getValue());
@@ -142,7 +142,6 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 			}
 
 		}
-		return null;
 
 	}
 
