@@ -10,10 +10,12 @@ public class AdjacencyMatrixGraph<T,K extends Comparable<K>> implements IGeneric
 	private boolean isDirected;
 	private PriorityQueue<Edge<T,K>>[][] adyacencyMatrix;
 	private ArrayList<Vertex<T,K>> vertexOrder;
-	public ArrayList<Edge<T,K>> edgeOrder;
+	private ArrayList<Edge<T,K>> edgeOrder;
+	private int numberOfEdge;
 	
 	public AdjacencyMatrixGraph(boolean isDirected) {
 		this.isDirected=isDirected;
+		numberOfEdge=0;
 	}
 	
 	@Override
@@ -28,9 +30,12 @@ public class AdjacencyMatrixGraph<T,K extends Comparable<K>> implements IGeneric
 
 	@Override
 	public void insertEdge(int from, int to, K data) throws VertexDoesNotExistException {
-		
-		
-		
+		numberOfEdge++;
+		Edge<T,K> edge = new Edge<T,K>(vertexOrder.get(from), vertexOrder.get(to), data, numberOfEdge);
+		edgeOrder.add(edge);
+		 
+		PriorityQueue<Edge<T,K>> temp = adyacencyMatrix[from][to];
+		temp.add(edge);
 	}
 
 	@Override
@@ -41,21 +46,45 @@ public class AdjacencyMatrixGraph<T,K extends Comparable<K>> implements IGeneric
 
 	}
 
+	public Edge<T,K> searchEdgeById(int id){
+		Edge<T,K> found=null;
+		boolean stop=false;
+		
+		for(int i=0;i<edgeOrder.size() && !stop;i++) {
+			
+			Edge<T,K> temp = edgeOrder.get(i);
+			if(temp.getId()==id) {
+				found = temp;
+				stop=true;
+			}
+			
+		}
+		
+		return found;
+	}
+	
 	@Override
 	public void deleteEdge(int from, int to, int id) {
-		// TODO Auto-generated method stub
-
+		
+		PriorityQueue<Edge<T,K>> temp = adyacencyMatrix[from][to];
+        
+		Edge<T,K> edge = searchEdgeById(id);
+		
+		temp.remove(edge);
+		
 	}
 
 	@Override
 	public ArrayList BFS(int origin) {
-		// TODO Auto-generated method stub
+		
+		
 		return null;
 	}
 
 	@Override
 	public int[] DFS() {
-		// TODO Auto-generated method stub
+		
+		
 		return null;
 	}
 	
