@@ -129,7 +129,7 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 
 	}
 
-	public void DFSRecursive(boolean[] visited, int n, ArrayList<T> ret) {
+	private void DFSRecursive(boolean[] visited, int n, ArrayList<T> ret) {
 
 		visited[n] = true;
 		ret.add(vertices.get(n).getValue());
@@ -145,7 +145,7 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 
 	}
 
-	public void prepareKruskal(PriorityQueue<Edge<T, K>> queue, ArrayList<LinkedList<Vertex<T, K>>> DS) {
+	private void prepareKruskal(PriorityQueue<Edge<T, K>> queue, ArrayList<LinkedList<Vertex<T, K>>> DS) {
 		for (int i = 0; i < vertices.size(); i++) {
 			LinkedList<Vertex<T, K>> created = new LinkedList<Vertex<T, K>>();
 			created.add(vertices.get(i));
@@ -198,7 +198,7 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 		return newGraph;
 	}
 
-	public boolean isConected(Vertex<T, K> v1, Vertex<T, K> v2, ArrayList<LinkedList<Vertex<T, K>>> DS) {
+	private boolean isConected(Vertex<T, K> v1, Vertex<T, K> v2, ArrayList<LinkedList<Vertex<T, K>>> DS) {
 		boolean conected = false;
 		for (int i = 0; i < DS.size(); i++) {
 			LinkedList<Vertex<T, K>> actual = (LinkedList<Vertex<T, K>>) DS.get(i);
@@ -209,7 +209,7 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 		return conected;
 	}
 
-	public void connect(Vertex<T, K> v1, Vertex<T, K> v2, ArrayList<LinkedList<Vertex<T, K>>> DS) {
+	private void connect(Vertex<T, K> v1, Vertex<T, K> v2, ArrayList<LinkedList<Vertex<T, K>>> DS) {
 		LinkedList<Vertex<T, K>> toConnect1 = null;
 		LinkedList<Vertex<T, K>> toConnect2 = null;
 		for (int i = 0; i < DS.size(); i++) {
@@ -246,7 +246,7 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 
 	}
 
-	public void updateAdjacencyList(Vertex<T, K> vertex) {
+	private void updateAdjacencyList(Vertex<T, K> vertex) {
 
 		ArrayList<Edge<T, K>> list = vertex.getAdjacencyList();
 		for (int i = 0; i < list.size(); i++) {
@@ -255,6 +255,80 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 			list.get(i).getVertexTo().deleteEdge(id);
 
 		}
+
+	}
+
+	/*
+	 * This method transforms the adjacency list structure implemented in this graph
+	 * into an adjacency matrix of K
+	 */
+	@SuppressWarnings({ "unchecked", "unused" })
+	private PriorityQueue<Edge<T, K>>[][] preFloyd() {
+
+		ArrayList<Integer> usedIds = new ArrayList<Integer>();
+		PriorityQueue<Edge<T, K>>[][] m = new PriorityQueue[vertices.size()][vertices.size()];
+		for (int i = 0; i < m.length; i++) {
+			for (int j = 0; j < m[0].length; j++) {
+				m[i][j] = new PriorityQueue<Edge<T, K>>(Integer.MAX_VALUE, new CompareEdgesByData());
+			}
+		}
+		for (int i = 0; i < vertices.size(); i++) {
+
+			Iterator<Edge<T, K>> it = (Iterator<Edge<T, K>>) vertices.get(i).getAdjacencyList().iterator();
+			while (it.hasNext()) {
+
+				Edge<T, K> e = it.next();
+				int id = e.getId();
+				if (usedIds.isEmpty() || !usedIds.contains(id)) {
+
+					usedIds.add(id);
+					int row = findVertexIndex(e.getVertexFrom());
+					int column = findVertexIndex(e.getVertexTo());
+					m[row][column].offer(e);
+
+				}
+
+			}
+
+		}
+		return m;
+
+	}
+
+	@SuppressWarnings("unchecked")
+	public K[][] floydWarshal() {
+
+		PriorityQueue<Edge<T, K>>[][] m = preFloyd();
+		K[][] dist = (K[][]) new Object[m.length][m[0].length];
+		for (int i = 0; i < dist.length; i++) {
+			for (int j = 0; j < dist.length; j++) {
+				if (m[i][j].isEmpty()) {
+					dist[i][j] = null;
+				} else {
+					dist[i][j] = m[i][j].peek().getData();
+				}
+			}
+		}
+		for (int k = 0; k < dist.length; k++) {
+			for (int i = 0; i < dist.length; i++) {
+				for (int j = 0; j < dist.length; j++) {
+					
+					if (!(dist[i][k] == null) && !(dist[k][j] == null)) {
+						
+//						if (dist[i][j] == null) {
+//							dist[i][j] = dist[i][k] + dist[k][j];
+//						} else if (dist[i][k]. + dist[k][j] < dist[i][j]){
+//							dist[i][j] = dist[i][k] + dist[k][j];
+//						}
+						
+					}
+					 
+					
+				}
+			}
+		}
+		
+		return null;
 
 	}
 

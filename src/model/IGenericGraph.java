@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import exceptions.VertexDoesNotExistException;
 
-public interface IGenericGraph<T, K> {
+public interface IGenericGraph<T, K extends Comparable<K>> {
 
 	public void insertVertex(T value);
 	public void insertEdge(int from, int to, K data) throws VertexDoesNotExistException;
@@ -12,5 +12,7 @@ public interface IGenericGraph<T, K> {
 	public void deleteEdge(int from, int to, int id) throws VertexDoesNotExistException;
 	public ArrayList<T> BFS(int origin);
 	public ArrayList<T> DFS();
+	public AdjacencyListGraph<T, K> kruskal() throws VertexDoesNotExistException;
+	public K[][] floydWarshal();
 	
 }
