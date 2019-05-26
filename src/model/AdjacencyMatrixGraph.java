@@ -369,8 +369,74 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 
 	@Override
 	public double[][] Dijkstra(T city) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		boolean[] visited = new boolean [vertexOrder.size()];
+		double [][] matrix = new double[2][vertexOrder.size()];
+		int position=searchPositionByCity(city);
+		PriorityQueue<Vertex<T>> pq = new PriorityQueue<Vertex<T>>();
+		pq.add(vertexOrder.get(position));
+		
+		for(int i=0;i<vertexOrder.size();i++) {
+			matrix[0][i]=-1;
+			
+			if(i==position) {
+				matrix[1][i]=0;
+			}
+			else {
+				matrix[1][i]=Double.MAX_VALUE;
+			}
+		}
+		
+		while(!pq.isEmpty()) {
+			
+			Vertex<T> current = pq.poll();
+			int pos = searchPositionByVertex(current);
+			
+			if(visited[pos]==false) {
+				
+				visited[pos]=true;
+				
+				for(int i=0;i<vertexOrder.size();i++) {
+					
+					if(!adyacencyMatrix[pos][i].isEmpty()) {
+					
+						pq.add(vertexOrder.get(i));
+						Edge<T> temp = adyacencyMatrix[pos][i].peek();
+						
+						double data = temp.getData();
+						
+						if(data<matrix[1][i]) {
+							matrix[0][i]=i;
+							matrix[1][i]=data;
+						}
+						
+					}
+					
+				}
+				
+			}
+			
+		}
+		
+		return matrix;
+	}
+	
+	private int searchPositionByVertex(Vertex<T> vertex) {
+		return vertexOrder.indexOf(vertex);
 	}
 
+	private int searchPositionByCity(T city) {
+		int position=-1;
+		boolean stop=false;
+		
+		for(int i=0;i<vertexOrder.size() && !stop;i++) {
+			Vertex<T> temp = vertexOrder.get(i);
+			if(city==temp.getValue()) {
+				position=i;
+				stop=true;
+			}
+		}
+		
+		return position;
+	}
 }
