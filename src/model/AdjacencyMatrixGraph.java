@@ -1,7 +1,9 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.PriorityQueue;
+import java.util.Queue;
 
 import exceptions.VertexDoesNotExistException;
 
@@ -12,6 +14,7 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 	private ArrayList<Vertex<T>> vertexOrder;
 	private ArrayList<Edge<T>> edgeOrder;
 	private int numberOfEdge;
+	private double[][] matrixToFloyd;
 	
 	public AdjacencyMatrixGraph(boolean isDirected) {
 		this.isDirected=isDirected;
@@ -116,8 +119,44 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 	@Override
 	public ArrayList BFS(int origin) {
 		
+		ArrayList<Vertex<T>> vertices = new ArrayList<Vertex<T>>();
 		
-		return null;
+		if(origin<vertexOrder.size()) {
+			
+			boolean [] visited = new boolean[vertexOrder.size()];
+			Queue<Integer> tail = new LinkedList<Integer>();
+			
+			int position = origin;
+			tail.add(position);
+			visited[position]=true;
+			vertices.add(vertexOrder.get(position));
+			
+			while(!tail.isEmpty()) {
+			
+				int current=tail.poll();
+				
+			for(int i=0;i<vertexOrder.size();i++) {
+				
+				PriorityQueue<Edge<T>> temp = adyacencyMatrix[current][i];
+				
+				if(!temp.isEmpty()) {
+					
+					if(visited[i]=false) {
+						
+						visited[i]=true;
+						vertices.add(vertexOrder.get(i));
+						tail.add(i);
+						
+					}
+					
+				}
+				
+			 }
+			
+			}
+		}
+		
+		return vertices;
 	}
 
 	@Override
@@ -245,6 +284,7 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 
 	@Override
 	public double[][] floydWarshal() {
+		
 		
 		
 		return null;
