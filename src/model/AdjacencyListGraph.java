@@ -2,6 +2,8 @@ package model;
 
 import java.util.*;
 
+import javax.xml.stream.events.StartDocument;
+
 import exceptions.VertexDoesNotExistException;
 
 public class AdjacencyListGraph<T> implements IGenericGraph<T> {
@@ -264,11 +266,10 @@ public class AdjacencyListGraph<T> implements IGenericGraph<T> {
 	@SuppressWarnings({ "unchecked" })
 	private PriorityQueue<Edge<T>>[][] transformIntoMatrix() {
 
-		ArrayList<Integer> usedIds = new ArrayList<Integer>();
 		PriorityQueue<Edge<T>>[][] m = new PriorityQueue[vertices.size()][vertices.size()];
 		for (int i = 0; i < m.length; i++) {
 			for (int j = 0; j < m[0].length; j++) {
-				m[i][j] = new PriorityQueue<Edge<T>>(Integer.MAX_VALUE, new CompareEdgesByData<T>());
+				m[i][j] = new PriorityQueue<Edge<T>>(vertices.size(), new CompareEdgesByData<T>());
 			}
 		}
 		for (int i = 0; i < vertices.size(); i++) {
@@ -277,15 +278,9 @@ public class AdjacencyListGraph<T> implements IGenericGraph<T> {
 			while (it.hasNext()) {
 
 				Edge<T> e = it.next();
-				int id = e.getId();
-				if (usedIds.isEmpty() || !usedIds.contains(id)) {
-
-					usedIds.add(id);
-					int row = findVertexIndex(e.getVertexFrom());
-					int column = findVertexIndex(e.getVertexTo());
-					m[row][column].offer(e);
-
-				}
+				int row = findVertexIndex(e.getVertexFrom());
+				int column = findVertexIndex(e.getVertexTo());
+				m[row][column].offer(e);
 
 			}
 
@@ -301,7 +296,11 @@ public class AdjacencyListGraph<T> implements IGenericGraph<T> {
 		for (int i = 0; i < dist.length; i++) {
 			for (int j = 0; j < dist.length; j++) {
 				if (m[i][j].isEmpty()) {
-					dist[i][j] = Double.MAX_VALUE;
+					if (i == j) {
+						dist[i][j] = 0;
+					} else {
+						dist[i][j] = Double.MAX_VALUE;
+					}
 				} else {
 					dist[i][j] = m[i][j].peek().getData();
 				}
@@ -319,24 +318,108 @@ public class AdjacencyListGraph<T> implements IGenericGraph<T> {
 			}
 		}
 
-		return null;
+		return dist;
 
 	}
 
-	@SuppressWarnings("unchecked")
-	public void prim() {
+	public int[] prim() {
 
 		PriorityQueue<Edge<T>>[][] m = transformIntoMatrix();
 		double[][] graph = new double[m.length][m[0].length];
 		for (int i = 0; i < graph.length; i++) {
 			for (int j = 0; j < graph.length; j++) {
 				if (m[i][j].isEmpty()) {
-					graph[i][j] = Double.MAX_VALUE;
+					if (i == j) {
+						graph[i][j] = 0;
+					} else {
+						graph[i][j] = Double.MAX_VALUE;
+					}
 				} else {
 					graph[i][j] = m[i][j].peek().getData();
 				}
 			}
 		}
+		int[] prev = new int[graph.length];
+		double[] keys = new double[graph.length];
+		Boolean[] setInTree = new Boolean[graph.length];
+		for (int i = 0; i < keys.length; i++) {
+			keys[i] = Double.MAX_VALUE;
+			setInTree[i] = false;
+		}
+		prev[0] = -1;
+		keys[0] = 0;
+
+		for (int i = 0; i < graph.length - 1; i++) {
+
+			int u = findMinKey(keys, setInTree);
+			if (u != -1) {
+
+				setInTree[u] = true;
+				for (int v = 0; v < graph.length; v++) {
+
+					if (graph[u][v] != 0 && setInTree[v] == false && graph[u][v] < keys[v]) {
+
+						prev[v] = u;
+						keys[v] = graph[u][v];
+
+					}
+
+				}
+
+			}
+
+		}
+		return prev;
+
+	}
+
+	public double[][] Dijkstra(T city) {
+		double[][] result = new double[2][vertices.size()];
+		Vertex<T> sartPoint = getVertex(city);
+		int originPos = findVertexIndex(sartPoint);
+		result[0][originPos] = 0;
+		result[1][originPos] = -1;
+		for (int i = 0; i < result[0].length; i++) {
+			if (result[0][i] == 0 && i != originPos) {
+				result[0][i] = Double.MAX_VALUE;
+				result[1][i] = -1;
+			}
+			vertices.get(i).setDist(result[0][i]);
+		}
+		PriorityQueue<Vertex<T>> queue = new PriorityQueue<Vertex<T>>(vertices.size(), new CompareVertexByDistance());
+		for (int i = 0; i < vertices.size(); i++) {
+			queue.add(vertices.get(i));
+		}
+		while (!queue.isEmpty()) {
+			Vertex<T> actual = queue.poll();
+			int currentIt = findVertexIndex(actual);
+			ArrayList<Edge<T>> connected = vertices.get(currentIt).getAdjacencyList();
+			for (int i = 0; i < connected.size(); i++) {
+				Edge<T> connection = connected.get(i);
+				int comparison = findVertexIndex(connection.getVertexTo());
+				if (result[0][currentIt] + connection.getData() < result[0][comparison]) {
+					result[0][comparison] = result[0][currentIt] + connection.getData();
+					connection.getVertexTo().setDist(result[0][comparison]);
+					result[1][comparison] = currentIt;
+				}
+			}
+		}
+		return result;
+	}
+
+	private int findMinKey(double[] keys, Boolean[] setInTree) {
+
+		double min = Double.MAX_VALUE;
+		int minIndex = -1;
+		for (int i = 0; i < keys.length; i++) {
+			if (setInTree[i] == false && keys[i] < min) {
+
+				min = keys[i];
+				minIndex = i;
+
+			}
+		}
+		return minIndex;
 
 	}
 

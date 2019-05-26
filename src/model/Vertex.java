@@ -6,6 +6,7 @@ public class Vertex<T> implements IVertex<T> {
 
 	private T value;
 	private ArrayList<Edge<T>> adjacency;
+	private Double dist;
 
 	public Vertex(T value) {
 
@@ -36,6 +37,14 @@ public class Vertex<T> implements IVertex<T> {
 	@Override
 	public ArrayList<Edge<T>> getAdjacencyList() {
 		return adjacency;
+	}
+
+	public double getDist() {
+		return dist;
+	}
+
+	public void setDist(double dist) {
+		this.dist = dist;
 	}
 
 	@Override
@@ -71,6 +80,10 @@ public class Vertex<T> implements IVertex<T> {
 
 		}
 
+	}
+
+	public int compareTo(Vertex v2) {
+		return this.dist.compareTo(v2.getDist());
 	}
 
 }
