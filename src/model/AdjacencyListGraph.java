@@ -301,7 +301,11 @@ public class AdjacencyListGraph<T> implements IGenericGraph<T> {
 		for (int i = 0; i < dist.length; i++) {
 			for (int j = 0; j < dist.length; j++) {
 				if (m[i][j].isEmpty()) {
-					dist[i][j] = Double.MAX_VALUE;
+					if (i == j) {
+						dist[i][j] = 0;
+					} else {
+						dist[i][j] = Double.MAX_VALUE;
+					}
 				} else {
 					dist[i][j] = m[i][j].peek().getData();
 				}
@@ -323,20 +327,70 @@ public class AdjacencyListGraph<T> implements IGenericGraph<T> {
 
 	}
 
-	@SuppressWarnings("unchecked")
-	public void prim() {
+	public int[] prim() {
 
 		PriorityQueue<Edge<T>>[][] m = transformIntoMatrix();
 		double[][] graph = new double[m.length][m[0].length];
 		for (int i = 0; i < graph.length; i++) {
 			for (int j = 0; j < graph.length; j++) {
 				if (m[i][j].isEmpty()) {
-					graph[i][j] = Double.MAX_VALUE;
+					if (i == j) {
+						graph[i][j] = 0;
+					} else {
+						graph[i][j] = Double.MAX_VALUE;
+					}
 				} else {
 					graph[i][j] = m[i][j].peek().getData();
 				}
 			}
 		}
+		int[] prev = new int[graph.length];
+		double[] keys = new double[graph.length];
+		Boolean[] setInTree = new Boolean[graph.length];
+		for (int i = 0; i < keys.length; i++) {
+			keys[i] = Double.MAX_VALUE;
+			setInTree[i] = false;
+		}
+		prev[0] = -1;
+		keys[0] = 0;
+
+		for (int i = 0; i < graph.length - 1; i++) {
+
+			int u = findMinKey(keys, setInTree);
+			if (u != -1) {
+
+				setInTree[u] = true;
+				for (int v = 0; v < graph.length; v++) {
+
+					if (graph[u][v] != 0 && setInTree[v] == false && graph[u][v] < keys[v]) {
+
+						prev[v] = u;
+						keys[v] = graph[u][v];
+
+					}
+
+				}
+
+			}
+
+		}
+		return prev;
+
+	}
+
+	private int findMinKey(double[] keys, Boolean[] setInTree) {
+
+		double min = Double.MAX_VALUE;
+		int minIndex = -1;
+		for (int i = 0; i < keys.length; i++) {
+			if (setInTree[i] == false && keys[i] < min) {
+
+				min = keys[i];
+				minIndex = i;
+
+			}
+		}
+		return minIndex;
 
 	}
 
