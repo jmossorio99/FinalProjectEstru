@@ -82,7 +82,7 @@ class AdjacencyListGraphTest {
 		try {
 			graph.insertEdge(0, 1, 500000);
 			graph.insertEdge(1, 0, 500000);
-			graph.insertEdge(2, 1, 250);
+			graph.insertEdge(2, 1, 250000);
 		} catch (VertexDoesNotExistException e) {
 			e.printStackTrace();
 		}
