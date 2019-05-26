@@ -14,7 +14,7 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 	private ArrayList<Vertex<T>> vertexOrder;
 	private ArrayList<Edge<T>> edgeOrder;
 	private int numberOfEdge;
-	private double[][] matrixToFloyd;
+	private Edge<T>[][] matrixToFloyd;
 	
 	public AdjacencyMatrixGraph(boolean isDirected) {
 		this.isDirected=isDirected;
@@ -199,11 +199,12 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 	}
 	
 	private void fillNulls(PriorityQueue<Edge<T>>[][] matrix) {
-		PriorityQueue<Edge<T>> temp = new PriorityQueue<Edge<T>>(1000, new CompareEdgesByData());
+		
 		
 		for(int i=0;i<matrix.length;i++) {
 			for(int j=0;j<matrix.length;j++) {
 				if(matrix[i][j]==null) {
+					PriorityQueue<Edge<T>> temp = new PriorityQueue<Edge<T>>(1000, new CompareEdgesByData());
 					matrix[i][j]=temp;
 				}
 			}
@@ -284,10 +285,37 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 
 	@Override
 	public double[][] floydWarshal() {
+		prepareMatrixToFloyd();		
 		
-		
+		for(int p=0;p<matrixToFloyd.length;p++) {
+			for(int i=0;i<matrixToFloyd.length;i++) {
+				for(int j=0;j<matrixToFloyd.length;j++) {
+					
+					if(!(matrixToFloyd[i][p]==null || matrixToFloyd[p][j]==null)) {
+						
+						
+						
+					}
+					
+				}
+			}
+		}
 		
 		return null;
+	}
+	
+	private void prepareMatrixToFloyd() {
+		
+		matrixToFloyd = new Edge[vertexOrder.size()][vertexOrder.size()];
+	
+		for(int i=0;i<vertexOrder.size();i++) {
+			for(int j=0;j<vertexOrder.size();j++) {
+				
+				matrixToFloyd[i][j]=adyacencyMatrix[i][j].peek();
+				
+			}
+		}
+		
 	}
 
 }
