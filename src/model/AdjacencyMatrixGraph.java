@@ -15,7 +15,6 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 	private ArrayList<Edge<T>> edgeOrder;
 	private int numberOfEdge;
 	private double[][] matrixToFloyd;
-	private boolean compareByPrice=true;
 	
 	public AdjacencyMatrixGraph(boolean isDirected) {
 		this.isDirected=isDirected;
@@ -23,10 +22,6 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 		vertexOrder = new ArrayList<Vertex<T>>();
  		edgeOrder = new ArrayList<Edge<T>>();
 		
-	}
-	
-	public void setCompareByPrice(boolean value) {
-		compareByPrice=value;
 	}
 	
 	@Override
