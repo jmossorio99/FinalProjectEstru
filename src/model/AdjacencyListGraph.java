@@ -266,11 +266,10 @@ public class AdjacencyListGraph<T> implements IGenericGraph<T> {
 	@SuppressWarnings({ "unchecked" })
 	private PriorityQueue<Edge<T>>[][] transformIntoMatrix() {
 
-		ArrayList<Integer> usedIds = new ArrayList<Integer>();
 		PriorityQueue<Edge<T>>[][] m = new PriorityQueue[vertices.size()][vertices.size()];
 		for (int i = 0; i < m.length; i++) {
 			for (int j = 0; j < m[0].length; j++) {
-				m[i][j] = new PriorityQueue<Edge<T>>(Integer.MAX_VALUE, new CompareEdgesByData<T>());
+				m[i][j] = new PriorityQueue<Edge<T>>(vertices.size(), new CompareEdgesByData<T>());
 			}
 		}
 		for (int i = 0; i < vertices.size(); i++) {
@@ -279,15 +278,9 @@ public class AdjacencyListGraph<T> implements IGenericGraph<T> {
 			while (it.hasNext()) {
 
 				Edge<T> e = it.next();
-				int id = e.getId();
-				if (usedIds.isEmpty() || !usedIds.contains(id)) {
-
-					usedIds.add(id);
-					int row = findVertexIndex(e.getVertexFrom());
-					int column = findVertexIndex(e.getVertexTo());
-					m[row][column].offer(e);
-
-				}
+				int row = findVertexIndex(e.getVertexFrom());
+				int column = findVertexIndex(e.getVertexTo());
+				m[row][column].offer(e);
 
 			}
 
@@ -306,7 +299,7 @@ public class AdjacencyListGraph<T> implements IGenericGraph<T> {
 					if (i == j) {
 						dist[i][j] = 0;
 					} else {
-						dist[i][j] = Double.MAX_VALUE;
+						dist[i][j] = 1111111111;
 					}
 				} else {
 					dist[i][j] = m[i][j].peek().getData();
@@ -325,7 +318,7 @@ public class AdjacencyListGraph<T> implements IGenericGraph<T> {
 			}
 		}
 
-		return null;
+		return dist;
 
 	}
 
@@ -380,26 +373,26 @@ public class AdjacencyListGraph<T> implements IGenericGraph<T> {
 
 	}
 
-	private double[][] Dijkstra(T city){
+	private double[][] Dijkstra(T city) {
 		double[][] result = new double[2][vertices.size()];
 		Vertex<T> sartPoint = getVertex(city);
 		int originPos = findVertexIndex(sartPoint);
 		result[0][originPos] = 0;
 		result[1][originPos] = -1;
-		for(int i = 0; i < result[0].length; i++) {
-			if(result[0][i] == 0 && i != originPos) {
+		for (int i = 0; i < result[0].length; i++) {
+			if (result[0][i] == 0 && i != originPos) {
 				result[0][i] = Double.MAX_VALUE;
 				result[1][i] = -1;
 			}
 		}
 		PriorityQueue<Vertex<T>> queue = new PriorityQueue<Vertex<T>>(vertices.size(), new CompareVertexByDistance());
-		for(int i = 0; i < vertices.size(); i++) {
+		for (int i = 0; i < vertices.size(); i++) {
 			queue.add(vertices.get(i));
 			vertices.get(i).setDist(result[1][i]);
 		}
-		while(!queue.isEmpty()) {
+		while (!queue.isEmpty()) {
 			Vertex<T> actual = queue.poll();
-			for(int i = 0; i < result[0].length; i++) {
+			for (int i = 0; i < result[0].length; i++) {
 				ArrayList<Edge<T>> connected = vertices.get(originPos).getAdjacencyList();
 				int current = findVertexIndex(connected.get(i).getVertexTo());
 				result[0][current] = connected.get(i).getData();
@@ -408,7 +401,7 @@ public class AdjacencyListGraph<T> implements IGenericGraph<T> {
 		}
 		return result;
 	}
-	
+
 	private int findMinKey(double[] keys, Boolean[] setInTree) {
 
 		double min = Double.MAX_VALUE;

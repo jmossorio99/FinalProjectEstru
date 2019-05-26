@@ -11,6 +11,7 @@ import model.*;
 
 class AdjacencyListGraphTest {
 
+	@SuppressWarnings("rawtypes")
 	private AdjacencyListGraph graph;
 
 	// empty directed graph
@@ -21,6 +22,7 @@ class AdjacencyListGraphTest {
 	}
 
 	// directed graph with vertices
+	@SuppressWarnings("unchecked")
 	private void setUp2() {
 
 		graph = new AdjacencyListGraph<String>(true);
@@ -33,6 +35,7 @@ class AdjacencyListGraphTest {
 	}
 
 	// nonDirected graph with vertices and edges
+	@SuppressWarnings("unchecked")
 	private void setUp3() {
 
 		graph = new AdjacencyListGraph<String>(false);
@@ -54,6 +57,7 @@ class AdjacencyListGraphTest {
 	}
 
 	// nonDirected Graph with two vertices and an edge
+	@SuppressWarnings("unchecked")
 	private void setUp4() {
 
 		graph = new AdjacencyListGraph<String>(false);
@@ -68,6 +72,7 @@ class AdjacencyListGraphTest {
 	}
 
 	// directed graph with three vertices and edges
+	@SuppressWarnings("unchecked")
 	private void setUp5() {
 
 		graph = new AdjacencyListGraph<String>(true);
@@ -84,6 +89,7 @@ class AdjacencyListGraphTest {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	private void setUp6() {
 		graph = new AdjacencyListGraph<String>(false);
 		graph.insertVertex("a");
@@ -105,6 +111,7 @@ class AdjacencyListGraphTest {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	void testInsertVertex() {
 		setUp1();
@@ -112,6 +119,7 @@ class AdjacencyListGraphTest {
 		assertFalse(graph.getVertices().isEmpty());
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	void testInsertEdge() {
 
@@ -130,6 +138,7 @@ class AdjacencyListGraphTest {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	void testDeleteVertex1() {
 
@@ -143,6 +152,7 @@ class AdjacencyListGraphTest {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	void testDeleteVertex2() {
 
@@ -157,6 +167,7 @@ class AdjacencyListGraphTest {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	void testIsAdjacent() {
 
@@ -165,6 +176,7 @@ class AdjacencyListGraphTest {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	void testDeleteEdge() {
 
@@ -217,6 +229,41 @@ class AdjacencyListGraphTest {
 		list.add("Pasto");
 		list.add("Barranquilla");
 		assertEquals(list, graph.DFS());
+
+	}
+
+	@Test
+	void testFloyd() {
+
+		setUp6();
+		double[] arr = { 0, 1, 4, 4, 2, 1, 0, 4, 3, 3, 4, 4, 0, 1, 3, 4, 3, 1, 0, 2, 2, 3, 3, 2, 0 };
+		double[][] m = auxFillMatrix(graph.getVertices().size(), graph.getVertices().size(), arr);
+		double[][] floyd = graph.floydWarshal();
+		boolean pass = true;
+		for (int i = 0; i < m.length; i++) {
+			for (int j = 0; j < m[0].length; j++) {
+				if (floyd[i][j] != m[i][j]) {
+					pass = false;
+				}
+			}
+		}
+		assertTrue(pass);
+
+	}
+
+	private double[][] auxFillMatrix(int rows, int columns, double[] m) {
+
+		int count = 0;
+		double[][] result = new double[rows][columns];
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+
+				result[i][j] = m[count];
+				count++;
+
+			}
+		}
+		return result;
 
 	}
 
