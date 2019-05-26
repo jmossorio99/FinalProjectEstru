@@ -5,26 +5,26 @@ import java.util.PriorityQueue;
 
 import exceptions.VertexDoesNotExistException;
 
-public class AdjacencyMatrixGraph<T,K extends Comparable<K>> implements IGenericGraph<T,K> {
+public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 
 	private boolean isDirected;
-	private PriorityQueue<Edge<T,K>>[][] adyacencyMatrix;
-	private ArrayList<Vertex<T,K>> vertexOrder;
-	private ArrayList<Edge<T,K>> edgeOrder;
+	private PriorityQueue<Edge<T>>[][] adyacencyMatrix;
+	private ArrayList<Vertex<T>> vertexOrder;
+	private ArrayList<Edge<T>> edgeOrder;
 	private int numberOfEdge;
 	
 	public AdjacencyMatrixGraph(boolean isDirected) {
 		this.isDirected=isDirected;
 		numberOfEdge=0;
-		vertexOrder = new ArrayList<Vertex<T,K>>();
- 		edgeOrder = new ArrayList<Edge<T,K>>();
+		vertexOrder = new ArrayList<Vertex<T>>();
+ 		edgeOrder = new ArrayList<Edge<T>>();
 		
 	}
 	
 	@Override
 	public void insertVertex(T value) {
 	
-		Vertex<T, K> v = new Vertex<T, K>(value);
+		Vertex<T> v = new Vertex<T>(value);
 		vertexOrder.add(v);
 		
 		newVertexToAdyacencyMatrix(vertexOrder.size());
@@ -32,30 +32,30 @@ public class AdjacencyMatrixGraph<T,K extends Comparable<K>> implements IGeneric
 	}
 
 	@Override
-	public void insertEdge(int from, int to, K data) throws VertexDoesNotExistException {
+	public void insertEdge(int from, int to, double data) throws VertexDoesNotExistException {
 		
 		
 		if(isDirected) {
 			
-			Edge<T,K> edge = new Edge<T,K>(vertexOrder.get(from), vertexOrder.get(to), data, numberOfEdge);
+			Edge<T> edge = new Edge<T>(vertexOrder.get(from), vertexOrder.get(to), data, numberOfEdge);
 			edgeOrder.add(edge);
 			
 			numberOfEdge++;
 			
-			PriorityQueue<Edge<T,K>> temp = adyacencyMatrix[from][to];
+			PriorityQueue<Edge<T>> temp = adyacencyMatrix[from][to];
 			temp.add(edge);
 		}
 		else {
 			
-			Edge<T,K> edge = new Edge<T,K>(vertexOrder.get(from), vertexOrder.get(to), data, numberOfEdge);
+			Edge<T> edge = new Edge<T>(vertexOrder.get(from), vertexOrder.get(to), data, numberOfEdge);
 			numberOfEdge++;
-			Edge<T,K> edge2 = new Edge<T,K>(vertexOrder.get(to), vertexOrder.get(from), data, numberOfEdge);
+			Edge<T> edge2 = new Edge<T>(vertexOrder.get(to), vertexOrder.get(from), data, numberOfEdge);
 			edgeOrder.add(edge);
 			edgeOrder.add(edge2);
 			
 			numberOfEdge++;
 			
-			PriorityQueue<Edge<T,K>> temp = adyacencyMatrix[from][to];
+			PriorityQueue<Edge<T>> temp = adyacencyMatrix[from][to];
 			temp.add(edge);
 			temp.add(edge2);
 		}
@@ -70,13 +70,13 @@ public class AdjacencyMatrixGraph<T,K extends Comparable<K>> implements IGeneric
 
 	}
 
-	public Edge<T,K> searchEdgeById(int id){
-		Edge<T,K> found=null;
+	public Edge<T> searchEdgeById(int id){
+		Edge<T> found=null;
 		boolean stop=false;
 		
 		for(int i=0;i<edgeOrder.size() && !stop;i++) {
 			
-			Edge<T,K> temp = edgeOrder.get(i);
+			Edge<T> temp = edgeOrder.get(i);
 			if(temp.getId()==id) {
 				found = temp;
 				stop=true;
@@ -90,18 +90,18 @@ public class AdjacencyMatrixGraph<T,K extends Comparable<K>> implements IGeneric
 	@Override
 	public void deleteEdge(int from, int to, int id) {
 		
-		PriorityQueue<Edge<T,K>> temp = adyacencyMatrix[from][to];
+		PriorityQueue<Edge<T>> temp = adyacencyMatrix[from][to];
         
 		if(isDirected) {
-			Edge<T,K> edge = searchEdgeById(id);
+			Edge<T> edge = searchEdgeById(id);
 			
 			temp.remove(edge);
 			
 			edgeOrder.remove(edge);
 		}
 		else {
-            Edge<T,K> edge = searchEdgeById(id);
-            Edge<T,K> edge2 = searchEdgeById(id+1);
+            Edge<T> edge = searchEdgeById(id);
+            Edge<T> edge2 = searchEdgeById(id+1);
             
 			temp.remove(edge);
 			temp.remove(edge2);
@@ -129,22 +129,19 @@ public class AdjacencyMatrixGraph<T,K extends Comparable<K>> implements IGeneric
 	
 	public void newVertexToAdyacencyMatrix(int numberOfVertices) {
 		
-		PriorityQueue<Edge<T, K>>[][] newAdyacencyMatrix = new PriorityQueue[numberOfVertices][numberOfVertices];
+		PriorityQueue<Edge<T>>[][] newAdyacencyMatrix = new PriorityQueue[numberOfVertices][numberOfVertices];
 
 		if(adyacencyMatrix==null) {
 			
-			PriorityQueue<Edge<T, K>> temp = new PriorityQueue<Edge<T, K>>(1000, new CompareEdgesByData());
+			PriorityQueue<Edge<T>> temp = new PriorityQueue<Edge<T>>(1000, new CompareEdgesByData());
 		    
 		    newAdyacencyMatrix[0][0]=temp;
 		 
 		   
-		    adyacencyMatrix=newAdyacencyMatrix;
-		    
-		    
+		    adyacencyMatrix=newAdyacencyMatrix;   
 		    
 		}
 		else {
-			
 			
 		for (int i = 0; i < adyacencyMatrix.length; i++) {
 			for (int j = 0; j < adyacencyMatrix.length; j++) {
@@ -162,8 +159,8 @@ public class AdjacencyMatrixGraph<T,K extends Comparable<K>> implements IGeneric
 		
 	}
 	
-	private void fillNulls(PriorityQueue<Edge<T, K>>[][] matrix) {
-		PriorityQueue<Edge<T, K>> temp = new PriorityQueue<Edge<T, K>>(1000, new CompareEdgesByData());
+	private void fillNulls(PriorityQueue<Edge<T>>[][] matrix) {
+		PriorityQueue<Edge<T>> temp = new PriorityQueue<Edge<T>>(1000, new CompareEdgesByData());
 		
 		for(int i=0;i<matrix.length;i++) {
 			for(int j=0;j<matrix.length;j++) {
@@ -176,7 +173,7 @@ public class AdjacencyMatrixGraph<T,K extends Comparable<K>> implements IGeneric
 
 	public void deleteVertexFromTheMatrix(int position,int newSize) {
 		
-		PriorityQueue<Edge<T, K>>[][] newAdyacencyMatrix = new PriorityQueue[newSize][newSize];
+		PriorityQueue<Edge<T>>[][] newAdyacencyMatrix = new PriorityQueue[newSize][newSize];
 		
 		for(int i=0;i<adyacencyMatrix.length;i++) {
 			for(int j =0;j<adyacencyMatrix.length;j++) {
@@ -205,18 +202,8 @@ public class AdjacencyMatrixGraph<T,K extends Comparable<K>> implements IGeneric
 		
 	}
 	
-	public String verifyMessaje() {
-		String messaje="";
-		for(int i=0;i<edgeOrder.size();i++) {
-		
-			messaje=edgeOrder.get(i).getData().toString()+"\n";
-			
-		}
-		
-		return messaje;
-	}
 	
-	public void seeMatrix(PriorityQueue<Edge<T,K>>[][] matrix) {
+	public void seeMatrix(PriorityQueue<Edge<T>>[][] matrix) {
 		
 		for(int i=0;i<matrix.length;i++) {
 			for(int j=0;j<matrix.length;j++) {
@@ -233,31 +220,33 @@ public class AdjacencyMatrixGraph<T,K extends Comparable<K>> implements IGeneric
 		
 	}
 	
-	public ArrayList<Vertex<T,K>> getVertices() {
+	public ArrayList<Vertex<T>> getVertices() {
 		return vertexOrder;
 	}
 	
-	public PriorityQueue<Edge<T, K>> getQueue(int row,int column){
+	public PriorityQueue<Edge<T>> getQueue(int row,int column){
 		
 		return adyacencyMatrix[row][column];
 		
 	}
 	
-	public ArrayList<Edge<T,K>> getEdges(){
+	public ArrayList<Edge<T>> getEdges(){
 		
 		return edgeOrder;
 		
 	}
 
 	@Override
-	public AdjacencyListGraph<T, K> kruskal() throws VertexDoesNotExistException {
-		// TODO Auto-generated method stub
+	public AdjacencyListGraph<T> kruskal() throws VertexDoesNotExistException {
+		
+		
 		return null;
 	}
 
 	@Override
-	public K[][] floydWarshal() {
-		// TODO Auto-generated method stub
+	public double[][] floydWarshal() {
+		
+		
 		return null;
 	}
 
