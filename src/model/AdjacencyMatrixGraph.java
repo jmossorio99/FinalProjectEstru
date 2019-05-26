@@ -14,7 +14,8 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 	private ArrayList<Vertex<T>> vertexOrder;
 	private ArrayList<Edge<T>> edgeOrder;
 	private int numberOfEdge;
-	private Edge<T>[][] matrixToFloyd;
+	private double[][] matrixToFloyd;
+	private boolean compareByPrice=true;
 	
 	public AdjacencyMatrixGraph(boolean isDirected) {
 		this.isDirected=isDirected;
@@ -22,6 +23,10 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 		vertexOrder = new ArrayList<Vertex<T>>();
  		edgeOrder = new ArrayList<Edge<T>>();
 		
+	}
+	
+	public void setCompareByPrice(boolean value) {
+		compareByPrice=value;
 	}
 	
 	@Override
@@ -291,9 +296,13 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 			for(int i=0;i<matrixToFloyd.length;i++) {
 				for(int j=0;j<matrixToFloyd.length;j++) {
 					
-					if(!(matrixToFloyd[i][p]==null || matrixToFloyd[p][j]==null)) {
+					double sum = matrixToFloyd[i][p]+matrixToFloyd[p][j];
+					
+					if(!(sum<0)) {
 						
-						
+					  if(sum<matrixToFloyd[i][j]) {
+						  matrixToFloyd[i][j]=sum;
+					  }
 						
 					}
 					
@@ -301,18 +310,24 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 			}
 		}
 		
-		return null;
+		return matrixToFloyd;
 	}
 	
 	private void prepareMatrixToFloyd() {
 		
-		matrixToFloyd = new Edge[vertexOrder.size()][vertexOrder.size()];
+		matrixToFloyd = new double[vertexOrder.size()][vertexOrder.size()];
 	
 		for(int i=0;i<vertexOrder.size();i++) {
 			for(int j=0;j<vertexOrder.size();j++) {
 				
-				matrixToFloyd[i][j]=adyacencyMatrix[i][j].peek();
-				
+				Edge<T> temp = adyacencyMatrix[i][j].peek();
+                
+				if(temp!=null) {
+					matrixToFloyd[i][j]= temp.getData();
+				}
+				else {
+					matrixToFloyd[i][j]=Double.MAX_VALUE;
+				}
 			}
 		}
 		
