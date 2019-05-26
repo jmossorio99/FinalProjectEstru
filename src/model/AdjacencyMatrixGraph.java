@@ -401,6 +401,7 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 					if(!adyacencyMatrix[pos][i].isEmpty()) {
 					
 						pq.add(vertexOrder.get(i));
+						
 						Edge<T> temp = adyacencyMatrix[pos][i].peek();
 						
 						double data = temp.getData();
