@@ -36,21 +36,25 @@ public class AdjacencyMatrixGraph<T,K extends Comparable<K>> implements IGeneric
 		
 		
 		if(isDirected) {
-			numberOfEdge++;
+			
 			Edge<T,K> edge = new Edge<T,K>(vertexOrder.get(from), vertexOrder.get(to), data, numberOfEdge);
 			edgeOrder.add(edge);
-			 
+			
+			numberOfEdge++;
+			
 			PriorityQueue<Edge<T,K>> temp = adyacencyMatrix[from][to];
 			temp.add(edge);
 		}
 		else {
-			numberOfEdge++;
+			
 			Edge<T,K> edge = new Edge<T,K>(vertexOrder.get(from), vertexOrder.get(to), data, numberOfEdge);
 			numberOfEdge++;
 			Edge<T,K> edge2 = new Edge<T,K>(vertexOrder.get(to), vertexOrder.get(from), data, numberOfEdge);
 			edgeOrder.add(edge);
 			edgeOrder.add(edge2);
-			 
+			
+			numberOfEdge++;
+			
 			PriorityQueue<Edge<T,K>> temp = adyacencyMatrix[from][to];
 			temp.add(edge);
 			temp.add(edge2);
@@ -117,7 +121,7 @@ public class AdjacencyMatrixGraph<T,K extends Comparable<K>> implements IGeneric
 	}
 
 	@Override
-	public int[] DFS() {
+	public ArrayList<T> DFS() {
 		
 		
 		return null;
@@ -226,6 +230,22 @@ public class AdjacencyMatrixGraph<T,K extends Comparable<K>> implements IGeneric
 				
 			}
 		}
+		
+	}
+	
+	public ArrayList<Vertex<T,K>> getVertices() {
+		return vertexOrder;
+	}
+	
+	public PriorityQueue<Edge<T, K>> getQueue(int row,int column){
+		
+		return adyacencyMatrix[row][column];
+		
+	}
+	
+	public ArrayList<Edge<T,K>> getEdges(){
+		
+		return edgeOrder;
 		
 	}
 
