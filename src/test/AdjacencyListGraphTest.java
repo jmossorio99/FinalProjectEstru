@@ -16,14 +16,14 @@ class AdjacencyListGraphTest {
 	// empty directed graph
 	private void setUp1() {
 
-		graph = new AdjacencyListGraph<String, Data>(true);
+		graph = new AdjacencyListGraph<String>(true);
 
 	}
 
 	// directed graph with vertices
 	private void setUp2() {
 
-		graph = new AdjacencyListGraph<String, Data>(true);
+		graph = new AdjacencyListGraph<String>(true);
 		graph.insertVertex("Cali");
 		graph.insertVertex("Bogotá");
 		graph.insertVertex("Medellín");
@@ -35,18 +35,18 @@ class AdjacencyListGraphTest {
 	// nonDirected graph with vertices and edges
 	private void setUp3() {
 
-		graph = new AdjacencyListGraph<String, Data>(false);
+		graph = new AdjacencyListGraph<String>(false);
 		graph.insertVertex("Cali");
 		graph.insertVertex("Bogotá");
 		graph.insertVertex("Medellín");
 		graph.insertVertex("Pasto");
 		graph.insertVertex("Barranquilla");
 		try {
-			graph.insertEdge(0, 1, new Data(250000, 45));
-			graph.insertEdge(1, 2, new Data(500000, 160));
-			graph.insertEdge(2, 3, new Data(150000, 200));
-			graph.insertEdge(1, 4, new Data(800000, 150));
-			graph.insertEdge(0, 4, new Data(650000, 180));
+			graph.insertEdge(0, 1, 250000);
+			graph.insertEdge(1, 2, 500000);
+			graph.insertEdge(2, 3, 150000);
+			graph.insertEdge(1, 4, 800000);
+			graph.insertEdge(0, 4, 650000);
 		} catch (VertexDoesNotExistException e) {
 			e.printStackTrace();
 		}
@@ -56,11 +56,11 @@ class AdjacencyListGraphTest {
 	// nonDirected Graph with two vertices and an edge
 	private void setUp4() {
 
-		graph = new AdjacencyListGraph<String, Data>(false);
+		graph = new AdjacencyListGraph<String>(false);
 		graph.insertVertex("Cali");
 		graph.insertVertex("Barranquilla");
 		try {
-			graph.insertEdge(0, 1, new Data(500000, 500));
+			graph.insertEdge(0, 1, 500000);
 		} catch (VertexDoesNotExistException e) {
 			e.printStackTrace();
 		}
@@ -70,14 +70,14 @@ class AdjacencyListGraphTest {
 	// directed graph with three vertices and edges
 	private void setUp5() {
 
-		graph = new AdjacencyListGraph<String, Data>(true);
+		graph = new AdjacencyListGraph<String>(true);
 		graph.insertVertex("Cali");
 		graph.insertVertex("Barranquilla");
 		graph.insertVertex("Bogota");
 		try {
-			graph.insertEdge(0, 1, new Data(500000, 500));
-			graph.insertEdge(1, 0, new Data(500000, 600));
-			graph.insertEdge(2, 1, new Data(200000, 250));
+			graph.insertEdge(0, 1, 500000);
+			graph.insertEdge(1, 0, 500000);
+			graph.insertEdge(2, 1, 250);
 		} catch (VertexDoesNotExistException e) {
 			e.printStackTrace();
 		}
@@ -85,7 +85,7 @@ class AdjacencyListGraphTest {
 	}
 
 	private void setUp6() {
-		graph = new AdjacencyListGraph<String, Integer>(false);
+		graph = new AdjacencyListGraph<String>(false);
 		graph.insertVertex("a");
 		graph.insertVertex("b");
 		graph.insertVertex("c");
@@ -104,7 +104,7 @@ class AdjacencyListGraphTest {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Test
 	void testInsertVertex() {
 		setUp1();
@@ -117,10 +117,10 @@ class AdjacencyListGraphTest {
 
 		setUp2();
 		try {
-			graph.insertEdge(0, 1, new Data(121212312, 52));
-			graph.insertEdge(1, 3, new Data(121212312, 52));
-			graph.insertEdge(3, 4, new Data(121212312, 52));
-			graph.insertEdge(3, 1, new Data(121212312, 52));
+			graph.insertEdge(0, 1, 121212312);
+			graph.insertEdge(1, 3, 121212312);
+			graph.insertEdge(3, 4, 121212312);
+			graph.insertEdge(3, 1, 121212312);
 		} catch (VertexDoesNotExistException e) {
 			e.printStackTrace();
 		}
@@ -191,24 +191,24 @@ class AdjacencyListGraphTest {
 		assertEquals(list, graph.BFS(0));
 
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Test
 	void testKruskal() {
-		
+
 		setUp6();
 		try {
-			AdjacencyListGraph<String, Integer> newGraph = (AdjacencyListGraph<String, Integer>)graph.kruskal();
+			AdjacencyListGraph<String> newGraph = (AdjacencyListGraph<String>) graph.kruskal();
 			assertEquals(4, newGraph.getNumOfEdges());
 		} catch (VertexDoesNotExistException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	@Test
 	void testDFS() {
-		
+
 		setUp3();
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("Cali");
@@ -217,7 +217,7 @@ class AdjacencyListGraphTest {
 		list.add("Pasto");
 		list.add("Barranquilla");
 		assertEquals(list, graph.DFS());
-		
+
 	}
 
 }

@@ -2,13 +2,13 @@ package model;
 
 import java.util.ArrayList;
 
-public interface IVertex<T, K extends Comparable<K>> {
+public interface IVertex<T> {
 
-	public void addEdge(Edge<T, K> e);
+	public void addEdge(Edge<T> e);
 	public void deleteEdge(int id);
 	public T getValue();
 	public void setValue(T value);
-	public ArrayList<Edge<T, K>> getAdjacencyList();
-	public boolean isAdjacent(Vertex<T, K> vertex, int id);
+	public ArrayList<Edge<T>> getAdjacencyList();
+	public boolean isAdjacent(Vertex<T> vertex, int id);
 
 }

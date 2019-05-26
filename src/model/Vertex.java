@@ -2,20 +2,20 @@ package model;
 
 import java.util.ArrayList;
 
-public class Vertex<T, K extends Comparable<K>> implements IVertex<T, K> {
+public class Vertex<T> implements IVertex<T> {
 
 	private T value;
-	private ArrayList<Edge<T, K>> adjacency;
+	private ArrayList<Edge<T>> adjacency;
 
 	public Vertex(T value) {
 
 		this.setValue(value);
-		adjacency = new ArrayList<Edge<T, K>>();
+		adjacency = new ArrayList<Edge<T>>();
 
 	}
 
 	@Override
-	public void addEdge(Edge<T, K> e) {
+	public void addEdge(Edge<T> e) {
 
 		adjacency.add(e);
 
@@ -34,12 +34,12 @@ public class Vertex<T, K extends Comparable<K>> implements IVertex<T, K> {
 	}
 
 	@Override
-	public ArrayList<Edge<T, K>> getAdjacencyList() {
+	public ArrayList<Edge<T>> getAdjacencyList() {
 		return adjacency;
 	}
 
 	@Override
-	public boolean isAdjacent(Vertex<T, K> vertex, int id) {
+	public boolean isAdjacent(Vertex<T> vertex, int id) {
 
 		for (int i = 0; i < adjacency.size(); i++) {
 			if (adjacency.get(i).getVertexTo().equals(vertex) && adjacency.get(i).getId() == id) {
@@ -61,7 +61,7 @@ public class Vertex<T, K extends Comparable<K>> implements IVertex<T, K> {
 
 	}
 
-	public void updateAdjacencyList(Vertex<T, K> vertex) {
+	public void updateAdjacencyList(Vertex<T> vertex) {
 
 		for (int i = 0; i < adjacency.size(); i++) {
 

@@ -4,38 +4,38 @@ import java.util.*;
 
 import exceptions.VertexDoesNotExistException;
 
-public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericGraph<T, K> {
+public class AdjacencyListGraph<T> implements IGenericGraph<T> {
 
-	private ArrayList<Vertex<T, K>> vertices;
+	private ArrayList<Vertex<T>> vertices;
 	private int numOfEdges = 0;
 	private boolean directedGraph = false;
 
 	public AdjacencyListGraph(boolean isDirected) {
 		directedGraph = isDirected;
-		vertices = new ArrayList<Vertex<T, K>>();
+		vertices = new ArrayList<Vertex<T>>();
 	}
 
 	@Override
 	public void insertVertex(T value) {
 
-		Vertex<T, K> v = new Vertex<T, K>(value);
+		Vertex<T> v = new Vertex<T>(value);
 		vertices.add(v);
 
 	}
 
 	@Override
-	public void insertEdge(int from, int to, K data) throws VertexDoesNotExistException {
+	public void insertEdge(int from, int to, double data) throws VertexDoesNotExistException {
 
 		if (from < vertices.size() && to < vertices.size()) {
 
-			Vertex<T, K> v = vertices.get(from);
-			Vertex<T, K> v2 = vertices.get(to);
+			Vertex<T> v = vertices.get(from);
+			Vertex<T> v2 = vertices.get(to);
 			if (directedGraph) {
-				v.addEdge(new Edge<T, K>(v, v2, data, numOfEdges));
+				v.addEdge(new Edge<T>(v, v2, data, numOfEdges));
 				numOfEdges++;
 			} else {
-				v.addEdge(new Edge<T, K>(v, v2, data, numOfEdges));
-				v2.addEdge(new Edge<T, K>(v2, v, data, numOfEdges));
+				v.addEdge(new Edge<T>(v, v2, data, numOfEdges));
+				v2.addEdge(new Edge<T>(v2, v, data, numOfEdges));
 				numOfEdges++;
 			}
 
@@ -50,12 +50,12 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 
 		if (v < vertices.size()) {
 
-			Vertex<T, K> toDelete = vertices.get(v);
+			Vertex<T> toDelete = vertices.get(v);
 			vertices.remove(v);
 			if (!directedGraph) {
 				updateAdjacencyList(toDelete);
 			} else {
-				for (Vertex<T, K> vertex : vertices) {
+				for (Vertex<T> vertex : vertices) {
 					vertex.updateAdjacencyList(toDelete);
 				}
 			}
@@ -70,8 +70,8 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 	public void deleteEdge(int from, int to, int id) throws VertexDoesNotExistException {
 
 		if (from < vertices.size() && to < vertices.size()) {
-			Vertex<T, K> v = vertices.get(from);
-			Vertex<T, K> v2 = vertices.get(to);
+			Vertex<T> v = vertices.get(from);
+			Vertex<T> v2 = vertices.get(to);
 			if (v.isAdjacent(v2, id)) {
 				if (directedGraph) {
 					v.deleteEdge(id);
@@ -86,7 +86,6 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public ArrayList<T> BFS(int origin) {
 
@@ -102,10 +101,10 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 			temp = queue.poll();
 			ret.add(temp);
 
-			Iterator<Edge<T, K>> it = (Iterator<Edge<T, K>>) getVertex(temp).getAdjacencyList().listIterator();
+			Iterator<Edge<T>> it = (Iterator<Edge<T>>) getVertex(temp).getAdjacencyList().listIterator();
 			while (it.hasNext()) {
 
-				Vertex<T, K> v = ((Edge<T, K>) it.next()).getVertexTo();
+				Vertex<T> v = ((Edge<T>) it.next()).getVertexTo();
 				int verIndex = findVertexIndex(v);
 				T n = v.getValue();
 				if (!visited[verIndex]) {
@@ -133,7 +132,7 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 
 		visited[n] = true;
 		ret.add(vertices.get(n).getValue());
-		Iterator<Edge<T, K>> it = (Iterator<Edge<T, K>>) vertices.get(n).getAdjacencyList().iterator();
+		Iterator<Edge<T>> it = (Iterator<Edge<T>>) vertices.get(n).getAdjacencyList().iterator();
 		while (it.hasNext()) {
 
 			int v = findVertexIndex(it.next().getVertexTo());
@@ -145,14 +144,14 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 
 	}
 
-	private void prepareKruskal(PriorityQueue<Edge<T, K>> queue, ArrayList<LinkedList<Vertex<T, K>>> DS) {
+	private void prepareKruskal(PriorityQueue<Edge<T>> queue, ArrayList<LinkedList<Vertex<T>>> DS) {
 		for (int i = 0; i < vertices.size(); i++) {
-			LinkedList<Vertex<T, K>> created = new LinkedList<Vertex<T, K>>();
+			LinkedList<Vertex<T>> created = new LinkedList<Vertex<T>>();
 			created.add(vertices.get(i));
 			DS.add(created);
 		}
 		for (int i = 0; i < vertices.size(); i++) {
-			ArrayList<Edge<T, K>> partial = vertices.get(i).getAdjacencyList();
+			ArrayList<Edge<T>> partial = vertices.get(i).getAdjacencyList();
 			for (int j = 0; j < partial.size(); j++) {
 				if (directedGraph) {
 					if (!queue.contains(partial.get(j))) {
@@ -160,9 +159,9 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 					}
 				} else {
 					boolean contained = false;
-					Iterator<Edge<T, K>> it = queue.iterator();
+					Iterator<Edge<T>> it = queue.iterator();
 					while (it.hasNext()) {
-						Edge<T, K> comparison = it.next();
+						Edge<T> comparison = it.next();
 						if (comparison.getId() == partial.get(j).getId()) {
 							contained = true;
 						}
@@ -175,16 +174,16 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 		}
 	}
 
-	public AdjacencyListGraph<T, K> kruskal() throws VertexDoesNotExistException {
-		AdjacencyListGraph<T, K> newGraph = new AdjacencyListGraph<>(directedGraph);
-		PriorityQueue<Edge<T, K>> queue = new PriorityQueue<Edge<T, K>>(numOfEdges, new CompareEdgesByData());
-		ArrayList<LinkedList<Vertex<T, K>>> DS = new ArrayList<LinkedList<Vertex<T, K>>>();
+	public AdjacencyListGraph<T> kruskal() throws VertexDoesNotExistException {
+		AdjacencyListGraph<T> newGraph = new AdjacencyListGraph<>(directedGraph);
+		PriorityQueue<Edge<T>> queue = new PriorityQueue<Edge<T>>(numOfEdges, new CompareEdgesByData<T>());
+		ArrayList<LinkedList<Vertex<T>>> DS = new ArrayList<LinkedList<Vertex<T>>>();
 		prepareKruskal(queue, DS);
 		while (!queue.isEmpty()) {
-			Edge<T, K> current = queue.poll();
+			Edge<T> current = queue.poll();
 			if (!isConected(current.getVertexFrom(), current.getVertexTo(), DS)) {
-				Vertex<T, K> v1 = current.getVertexFrom();
-				Vertex<T, K> v2 = current.getVertexTo();
+				Vertex<T> v1 = current.getVertexFrom();
+				Vertex<T> v2 = current.getVertexTo();
 				if (newGraph.getVertex(v1.getValue()) == null) {
 					newGraph.insertVertex(v1.getValue());
 				}
@@ -198,10 +197,10 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 		return newGraph;
 	}
 
-	private boolean isConected(Vertex<T, K> v1, Vertex<T, K> v2, ArrayList<LinkedList<Vertex<T, K>>> DS) {
+	private boolean isConected(Vertex<T> v1, Vertex<T> v2, ArrayList<LinkedList<Vertex<T>>> DS) {
 		boolean conected = false;
 		for (int i = 0; i < DS.size(); i++) {
-			LinkedList<Vertex<T, K>> actual = (LinkedList<Vertex<T, K>>) DS.get(i);
+			LinkedList<Vertex<T>> actual = (LinkedList<Vertex<T>>) DS.get(i);
 			if (actual.contains(v1) && actual.contains(v2)) {
 				conected = true;
 			}
@@ -209,11 +208,11 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 		return conected;
 	}
 
-	private void connect(Vertex<T, K> v1, Vertex<T, K> v2, ArrayList<LinkedList<Vertex<T, K>>> DS) {
-		LinkedList<Vertex<T, K>> toConnect1 = null;
-		LinkedList<Vertex<T, K>> toConnect2 = null;
+	private void connect(Vertex<T> v1, Vertex<T> v2, ArrayList<LinkedList<Vertex<T>>> DS) {
+		LinkedList<Vertex<T>> toConnect1 = null;
+		LinkedList<Vertex<T>> toConnect2 = null;
 		for (int i = 0; i < DS.size(); i++) {
-			LinkedList<Vertex<T, K>> current = (LinkedList<Vertex<T, K>>) DS.get(i);
+			LinkedList<Vertex<T>> current = (LinkedList<Vertex<T>>) DS.get(i);
 			if (current.contains(v1)) {
 				toConnect1 = current;
 			} else if (current.contains(v2)) {
@@ -224,7 +223,7 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 		DS.remove(toConnect2);
 	}
 
-	public Vertex<T, K> getVertex(T value) {
+	public Vertex<T> getVertex(T value) {
 
 		for (int j = 0; j < vertices.size(); j++) {
 			if (vertices.get(j).getValue().equals(value)) {
@@ -235,7 +234,7 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 
 	}
 
-	public int findVertexIndex(Vertex<T, K> v) {
+	public int findVertexIndex(Vertex<T> v) {
 
 		for (int i = 0; i < vertices.size(); i++) {
 			if (vertices.get(i).equals(v)) {
@@ -246,9 +245,9 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 
 	}
 
-	private void updateAdjacencyList(Vertex<T, K> vertex) {
+	private void updateAdjacencyList(Vertex<T> vertex) {
 
-		ArrayList<Edge<T, K>> list = vertex.getAdjacencyList();
+		ArrayList<Edge<T>> list = vertex.getAdjacencyList();
 		for (int i = 0; i < list.size(); i++) {
 
 			int id = list.get(i).getId();
@@ -262,22 +261,22 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 	 * This method transforms the adjacency list structure implemented in this graph
 	 * into an adjacency matrix of K
 	 */
-	@SuppressWarnings({ "unchecked", "unused" })
-	private PriorityQueue<Edge<T, K>>[][] preFloyd() {
+	@SuppressWarnings({ "unchecked" })
+	private PriorityQueue<Edge<T>>[][] transformIntoMatrix() {
 
 		ArrayList<Integer> usedIds = new ArrayList<Integer>();
-		PriorityQueue<Edge<T, K>>[][] m = new PriorityQueue[vertices.size()][vertices.size()];
+		PriorityQueue<Edge<T>>[][] m = new PriorityQueue[vertices.size()][vertices.size()];
 		for (int i = 0; i < m.length; i++) {
 			for (int j = 0; j < m[0].length; j++) {
-				m[i][j] = new PriorityQueue<Edge<T, K>>(Integer.MAX_VALUE, new CompareEdgesByData());
+				m[i][j] = new PriorityQueue<Edge<T>>(Integer.MAX_VALUE, new CompareEdgesByData<T>());
 			}
 		}
 		for (int i = 0; i < vertices.size(); i++) {
 
-			Iterator<Edge<T, K>> it = (Iterator<Edge<T, K>>) vertices.get(i).getAdjacencyList().iterator();
+			Iterator<Edge<T>> it = (Iterator<Edge<T>>) vertices.get(i).getAdjacencyList().iterator();
 			while (it.hasNext()) {
 
-				Edge<T, K> e = it.next();
+				Edge<T> e = it.next();
 				int id = e.getId();
 				if (usedIds.isEmpty() || !usedIds.contains(id)) {
 
@@ -295,15 +294,14 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 
 	}
 
-	@SuppressWarnings("unchecked")
-	public K[][] floydWarshal() {
+	public double[][] floydWarshal() {
 
-		PriorityQueue<Edge<T, K>>[][] m = preFloyd();
-		K[][] dist = (K[][]) new Object[m.length][m[0].length];
+		PriorityQueue<Edge<T>>[][] m = transformIntoMatrix();
+		double[][] dist = new double[m.length][m[0].length];
 		for (int i = 0; i < dist.length; i++) {
 			for (int j = 0; j < dist.length; j++) {
 				if (m[i][j].isEmpty()) {
-					dist[i][j] = null;
+					dist[i][j] = Double.MAX_VALUE;
 				} else {
 					dist[i][j] = m[i][j].peek().getData();
 				}
@@ -312,27 +310,37 @@ public class AdjacencyListGraph<T, K extends Comparable<K>> implements IGenericG
 		for (int k = 0; k < dist.length; k++) {
 			for (int i = 0; i < dist.length; i++) {
 				for (int j = 0; j < dist.length; j++) {
-					
-					if (!(dist[i][k] == null) && !(dist[k][j] == null)) {
-						
-//						if (dist[i][j] == null) {
-//							dist[i][j] = dist[i][k] + dist[k][j];
-//						} else if (dist[i][k]. + dist[k][j] < dist[i][j]){
-//							dist[i][j] = dist[i][k] + dist[k][j];
-//						}
-						
+
+					if (dist[i][j] > dist[i][k] + dist[k][j]) {
+						dist[i][j] = dist[i][k] + dist[k][j];
 					}
-					 
-					
+
 				}
 			}
 		}
-		
+
 		return null;
 
 	}
 
-	public ArrayList<Vertex<T, K>> getVertices() {
+	@SuppressWarnings("unchecked")
+	public void prim() {
+
+		PriorityQueue<Edge<T>>[][] m = transformIntoMatrix();
+		double[][] graph = new double[m.length][m[0].length];
+		for (int i = 0; i < graph.length; i++) {
+			for (int j = 0; j < graph.length; j++) {
+				if (m[i][j].isEmpty()) {
+					graph[i][j] = Double.MAX_VALUE;
+				} else {
+					graph[i][j] = m[i][j].peek().getData();
+				}
+			}
+		}
+
+	}
+
+	public ArrayList<Vertex<T>> getVertices() {
 
 		return vertices;
 

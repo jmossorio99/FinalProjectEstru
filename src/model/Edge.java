@@ -1,13 +1,13 @@
 package model;
 
-public class Edge<T, K extends Comparable<K>> {
+public class Edge<T> {
 
-	private Vertex<T, K> vertexFrom;
-	private Vertex<T, K> vertexTo;
-	private K data;
+	private Vertex<T> vertexFrom;
+	private Vertex<T> vertexTo;
+	private double data;
 	private int id;
 
-	public Edge(Vertex<T, K> v, Vertex<T, K> v2, K data, int id) {
+	public Edge(Vertex<T> v, Vertex<T> v2, double data, int id) {
 
 		setVertexFrom(v);
 		setVertexTo(v2);
@@ -16,27 +16,27 @@ public class Edge<T, K extends Comparable<K>> {
 
 	}
 
-	public Vertex<T, K> getVertexTo() {
+	public Vertex<T> getVertexTo() {
 		return vertexTo;
 	}
 
-	public void setVertexTo(Vertex<T, K> vertexTo) {
+	public void setVertexTo(Vertex<T> vertexTo) {
 		this.vertexTo = vertexTo;
 	}
 
-	public Vertex<T, K> getVertexFrom() {
+	public Vertex<T> getVertexFrom() {
 		return vertexFrom;
 	}
 
-	public void setVertexFrom(Vertex<T, K> vertexFrom) {
+	public void setVertexFrom(Vertex<T> vertexFrom) {
 		this.vertexFrom = vertexFrom;
 	}
 
-	public K getData() {
+	public double getData() {
 		return data;
 	}
 
-	public void setData(K data) {
+	public void setData(double data) {
 		this.data = data;
 	}
 
@@ -49,13 +49,14 @@ public class Edge<T, K extends Comparable<K>> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public int compareTo(Edge<T, K> o2) {
-		return this.data.compareTo((K) o2.getData());
-	}
+	public int compareTo(Edge<T> o2) {
 
-	public int compareTo(Edge<T, K> e1, Edge<T, K> e2) {
-
-		return e1.getData().compareTo(e2.getData());
+		if (this.getData() > o2.getData()) {
+			return 1;
+		} else if (this.getData() < o2.getData()) {
+			return -1;
+		}
+		return 0;
 
 	}
 
