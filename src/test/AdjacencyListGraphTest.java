@@ -112,6 +112,29 @@ class AdjacencyListGraphTest {
 	}
 
 	@SuppressWarnings("unchecked")
+	private void setUp7() {
+		graph = new AdjacencyListGraph<String>(false);
+		graph.insertVertex("a");
+		graph.insertVertex("b");
+		graph.insertVertex("c");
+		graph.insertVertex("d");
+		graph.insertVertex("e");
+		graph.insertVertex("z");
+		try {
+			graph.insertEdge(0, 1, 2);
+			graph.insertEdge(0, 2, 3);
+			graph.insertEdge(1, 3, 5);
+			graph.insertEdge(1, 4, 2);
+			graph.insertEdge(2, 4, 5);
+			graph.insertEdge(3, 4, 1);
+			graph.insertEdge(3, 5, 2);
+			graph.insertEdge(4, 5, 4);
+		} catch (VertexDoesNotExistException e) {
+			e.printStackTrace();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
 	@Test
 	void testInsertVertex() {
 		setUp1();
@@ -249,6 +272,17 @@ class AdjacencyListGraphTest {
 		}
 		assertTrue(pass);
 
+	}
+
+	@Test
+	void testDijkstra() {
+		setUp7();
+		double[][] expected = { { 0, 2, 3, 5, 4, 7 }, { -1, 0, 0, 4, 1, 3 } };
+		double[][] obtained = graph.Dijkstra("a");
+		for (int i = 0; i < expected[0].length; i++) {
+			assertEquals(expected[0][i], obtained[0][i]);
+			assertEquals(expected[1][i], obtained[1][i]);
+		}
 	}
 
 	private double[][] auxFillMatrix(int rows, int columns, double[] m) {
