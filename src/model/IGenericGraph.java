@@ -14,5 +14,7 @@ public interface IGenericGraph<T> {
 	public ArrayList<T> DFS();
 	public AdjacencyListGraph<T> kruskal() throws VertexDoesNotExistException;
 	public double[][] floydWarshal();
+	public int[] prim();
+	public double[][] Dijkstra(T city);
 	
 }
