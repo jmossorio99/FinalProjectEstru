@@ -53,4 +53,10 @@ public class Edge<T, K extends Comparable<K>> {
 		return this.data.compareTo((K) o2.getData());
 	}
 
+	public int compareTo(Edge<T, K> e1, Edge<T, K> e2) {
+
+		return e1.getData().compareTo(e2.getData());
+
+	}
+
 }

@@ -249,4 +249,16 @@ public class AdjacencyMatrixGraph<T,K extends Comparable<K>> implements IGeneric
 		
 	}
 
+	@Override
+	public AdjacencyListGraph<T, K> kruskal() throws VertexDoesNotExistException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public K[][] floydWarshal() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
