@@ -299,7 +299,7 @@ public class AdjacencyListGraph<T> implements IGenericGraph<T> {
 					if (i == j) {
 						dist[i][j] = 0;
 					} else {
-						dist[i][j] = 1111111111;
+						dist[i][j] = Double.MAX_VALUE;
 					}
 				} else {
 					dist[i][j] = m[i][j].peek().getData();
@@ -397,7 +397,7 @@ public class AdjacencyListGraph<T> implements IGenericGraph<T> {
 			for (int i = 0; i < connected.size(); i++) {
 				Edge<T> connection = connected.get(i);
 				int comparison = findVertexIndex(connection.getVertexTo());
-				if(result[0][currentIt] + connection.getData() < result[0][comparison]) {
+				if (result[0][currentIt] + connection.getData() < result[0][comparison]) {
 					result[0][comparison] = result[0][currentIt] + connection.getData();
 					connection.getVertexTo().setDist(result[0][comparison]);
 					result[1][comparison] = currentIt;
