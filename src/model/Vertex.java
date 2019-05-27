@@ -10,9 +10,11 @@ public class Vertex<T> implements IVertex<T> {
 	private double xCoordinate;
 	private double yCoordinate;
 
-	public Vertex(T value) {
+	public Vertex(T value, double xCoordinate, double yCoordinate) {
 
 		this.setValue(value);
+		this.xCoordinate = xCoordinate;
+		this.yCoordinate = yCoordinate;
 		adjacency = new ArrayList<Edge<T>>();
 
 	}

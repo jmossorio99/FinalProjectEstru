@@ -26,9 +26,9 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 	}
 
 	@Override
-	public void insertVertex(T value) {
+	public void insertVertex(T value, double xCoordinate, double yCoordinate) {
 
-		Vertex<T> v = new Vertex<T>(value);
+		Vertex<T> v = new Vertex<T>(value, xCoordinate, yCoordinate);
 		vertexOrder.add(v);
 
 		newVertexToAdyacencyMatrix(vertexOrder.size());
@@ -286,10 +286,10 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 				Vertex<T> v1 = current.getVertexFrom();
 				Vertex<T> v2 = current.getVertexTo();
 				if (newGraph.getVertex(v1.getValue()) == null) {
-					newGraph.insertVertex(v1.getValue());
+					newGraph.insertVertex(v1.getValue(), v1.getxCoordinate(), v1.getyCoordinate());
 				}
 				if (newGraph.getVertex(v2.getValue()) == null) {
-					newGraph.insertVertex(v2.getValue());
+					newGraph.insertVertex(v2.getValue(), v2.getxCoordinate(), v2.getyCoordinate());
 				}
 				newGraph.insertEdge(searchPositionByVertex(v1), searchPositionByVertex(v2), current.getData());
 				connect(v1, v2, DS);

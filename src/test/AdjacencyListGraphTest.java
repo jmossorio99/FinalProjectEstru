@@ -26,11 +26,11 @@ class AdjacencyListGraphTest {
 	private void setUp2() {
 
 		graph = new AdjacencyListGraph<String>(true);
-		graph.insertVertex("Cali");
-		graph.insertVertex("Bogotá");
-		graph.insertVertex("Medellín");
-		graph.insertVertex("Pasto");
-		graph.insertVertex("Barranquilla");
+		graph.insertVertex("Cali",0,0);
+		graph.insertVertex("Bogotá",0,0);
+		graph.insertVertex("Medellín",0,0);
+		graph.insertVertex("Pasto",0,0);
+		graph.insertVertex("Barranquilla",0,0);
 
 	}
 
@@ -39,11 +39,11 @@ class AdjacencyListGraphTest {
 	private void setUp3() {
 
 		graph = new AdjacencyListGraph<String>(false);
-		graph.insertVertex("Cali");
-		graph.insertVertex("Bogotá");
-		graph.insertVertex("Medellín");
-		graph.insertVertex("Pasto");
-		graph.insertVertex("Barranquilla");
+		graph.insertVertex("Cali",0,0);
+		graph.insertVertex("Bogotá",0,0);
+		graph.insertVertex("Medellín",0,0);
+		graph.insertVertex("Pasto",0,0);
+		graph.insertVertex("Barranquilla",0,0);
 		try {
 			graph.insertEdge(0, 1, 250000);
 			graph.insertEdge(1, 2, 500000);
@@ -61,8 +61,8 @@ class AdjacencyListGraphTest {
 	private void setUp4() {
 
 		graph = new AdjacencyListGraph<String>(false);
-		graph.insertVertex("Cali");
-		graph.insertVertex("Barranquilla");
+		graph.insertVertex("Cali",0,0);
+		graph.insertVertex("Barranquilla",0,0);
 		try {
 			graph.insertEdge(0, 1, 500000);
 		} catch (VertexDoesNotExistException e) {
@@ -76,9 +76,9 @@ class AdjacencyListGraphTest {
 	private void setUp5() {
 
 		graph = new AdjacencyListGraph<String>(true);
-		graph.insertVertex("Cali");
-		graph.insertVertex("Barranquilla");
-		graph.insertVertex("Bogota");
+		graph.insertVertex("Cali",0,0);
+		graph.insertVertex("Barranquilla",0,0);
+		graph.insertVertex("Bogota",0,0);
 		try {
 			graph.insertEdge(0, 1, 500000);
 			graph.insertEdge(1, 0, 500000);
@@ -92,11 +92,11 @@ class AdjacencyListGraphTest {
 	@SuppressWarnings("unchecked")
 	private void setUp6() {
 		graph = new AdjacencyListGraph<String>(false);
-		graph.insertVertex("a");
-		graph.insertVertex("b");
-		graph.insertVertex("c");
-		graph.insertVertex("d");
-		graph.insertVertex("e");
+		graph.insertVertex("a",0,0);
+		graph.insertVertex("b",0,0);
+		graph.insertVertex("c",0,0);
+		graph.insertVertex("d",0,0);
+		graph.insertVertex("e",0,0);
 		try {
 			graph.insertEdge(0, 1, 1);
 			graph.insertEdge(0, 2, 4);
@@ -114,12 +114,12 @@ class AdjacencyListGraphTest {
 	@SuppressWarnings("unchecked")
 	private void setUp7() {
 		graph = new AdjacencyListGraph<String>(false);
-		graph.insertVertex("a");
-		graph.insertVertex("b");
-		graph.insertVertex("c");
-		graph.insertVertex("d");
-		graph.insertVertex("e");
-		graph.insertVertex("z");
+		graph.insertVertex("a",0,0);
+		graph.insertVertex("b",0,0);
+		graph.insertVertex("c",0,0);
+		graph.insertVertex("d",0,0);
+		graph.insertVertex("e",0,0);
+		graph.insertVertex("z",0,0);
 		try {
 			graph.insertEdge(0, 1, 2);
 			graph.insertEdge(0, 2, 3);
@@ -138,7 +138,7 @@ class AdjacencyListGraphTest {
 	@Test
 	void testInsertVertex() {
 		setUp1();
-		graph.insertVertex("Cali");
+		graph.insertVertex("Cali",0,0);
 		assertFalse(graph.getVertices().isEmpty());
 	}
 

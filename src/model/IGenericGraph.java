@@ -6,7 +6,7 @@ import exceptions.VertexDoesNotExistException;
 
 public interface IGenericGraph<T> {
 
-	public void insertVertex(T value);
+	public void insertVertex(T value, double xCoordinate, double yCoordinate);
 	public void insertEdge(int from, int to, double data) throws VertexDoesNotExistException;
 	public void deleteVertex(int v) throws VertexDoesNotExistException;
 	public void deleteEdge(int from, int to, int id) throws VertexDoesNotExistException;

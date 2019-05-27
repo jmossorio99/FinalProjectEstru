@@ -26,11 +26,11 @@ class AdyacencyMatrixGraphTest {
 	void setUp2() {
 
 		setUp1();
-		graph.insertVertex("Cali");
-		graph.insertVertex("Bogotá");
-		graph.insertVertex("Medellín");
-		graph.insertVertex("Pasto");
-		graph.insertVertex("Barranquilla");
+		graph.insertVertex("Cali",0,0);
+		graph.insertVertex("Bogotá",0,0);
+		graph.insertVertex("Medellín",0,0);
+		graph.insertVertex("Pasto",0,0);
+		graph.insertVertex("Barranquilla",0,0);
 
 	}
 
@@ -38,11 +38,11 @@ class AdyacencyMatrixGraphTest {
 	void setUp3() {
 
 		graph = new AdjacencyMatrixGraph<String>(false);
-		graph.insertVertex("Cali");
-		graph.insertVertex("Bogotá");
-		graph.insertVertex("Medellín");
-		graph.insertVertex("Pasto");
-		graph.insertVertex("Barranquilla");
+		graph.insertVertex("Cali",0,0);
+		graph.insertVertex("Bogotá",0,0);
+		graph.insertVertex("Medellín",0,0);
+		graph.insertVertex("Pasto",0,0);
+		graph.insertVertex("Barranquilla",0,0);
 		try {
 			graph.insertEdge(0, 1, 250000);
 			graph.insertEdge(1, 2, 500000);
@@ -58,8 +58,8 @@ class AdyacencyMatrixGraphTest {
 	void setUp4() {
 
 		setUp1();
-		graph.insertVertex("Cali");
-		graph.insertVertex("Barranquilla");
+		graph.insertVertex("Cali",0,0);
+		graph.insertVertex("Barranquilla",0,0);
 
 		try {
 			graph.insertEdge(0, 1, 500000);
@@ -72,9 +72,9 @@ class AdyacencyMatrixGraphTest {
 	void setUp5() {
 
 		setUp1();
-		graph.insertVertex("Cali");
-		graph.insertVertex("Barranquilla");
-		graph.insertVertex("Bogota");
+		graph.insertVertex("Cali",0,0);
+		graph.insertVertex("Barranquilla",0,0);
+		graph.insertVertex("Bogota",0,0);
 
 		try {
 			graph.insertEdge(0, 1, 500000);
@@ -89,11 +89,11 @@ class AdyacencyMatrixGraphTest {
 	@SuppressWarnings("unchecked")
 	void setUp6() {
 		graph = new AdjacencyMatrixGraph<String>(false);
-		graph.insertVertex("a");
-		graph.insertVertex("b");
-		graph.insertVertex("c");
-		graph.insertVertex("d");
-		graph.insertVertex("e");
+		graph.insertVertex("a",0,0);
+		graph.insertVertex("b",0,0);
+		graph.insertVertex("c",0,0);
+		graph.insertVertex("d",0,0);
+		graph.insertVertex("e",0,0);
 		try {
 			graph.insertEdge(0, 1, 1);
 			graph.insertEdge(0, 2, 4);
@@ -111,7 +111,7 @@ class AdyacencyMatrixGraphTest {
 	@Test
 	void testInsertVertex() {
 		setUp1();
-		graph.insertVertex("Cali");
+		graph.insertVertex("Cali",0,0);
 		assertFalse(graph.getVertices().isEmpty());
 	}
 
