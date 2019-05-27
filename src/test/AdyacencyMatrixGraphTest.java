@@ -2,6 +2,8 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
+
 import org.junit.jupiter.api.Test;
 
 import exceptions.VertexDoesNotExistException;
@@ -36,8 +38,12 @@ class AdyacencyMatrixGraphTest {
 	@Test
 	void setUp3() {
 
-		setUp2();
-
+		graph = new AdjacencyMatrixGraph<String>(false);
+		graph.insertVertex("Cali");
+		graph.insertVertex("Bogotá");
+		graph.insertVertex("Medellín");
+		graph.insertVertex("Pasto");
+		graph.insertVertex("Barranquilla");
 		try {
 			graph.insertEdge(0, 1, 250000);
 			graph.insertEdge(1, 2, 500000);
@@ -81,11 +87,9 @@ class AdyacencyMatrixGraphTest {
 
 	}
 
-	@Test
+	@SuppressWarnings("unchecked")
 	void setUp6() {
-
 		graph = new AdjacencyMatrixGraph<String>(false);
-
 		graph.insertVertex("a");
 		graph.insertVertex("b");
 		graph.insertVertex("c");
@@ -103,7 +107,6 @@ class AdyacencyMatrixGraphTest {
 		} catch (VertexDoesNotExistException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 	@Test
@@ -148,6 +151,41 @@ class AdyacencyMatrixGraphTest {
 		setUp3();
 
 		graph.deleteEdge(0, 1, 0);
+
+	}
+
+	@Test
+	void testDFS() {
+
+		setUp3();
+		ArrayList<String> list = new ArrayList<String>();
+		list.add("Cali");
+		list.add("Bogotá");
+		list.add("Medellín");
+		list.add("Pasto");
+		list.add("Barranquilla");
+		assertEquals(list, graph.DFS());
+
+	}
+	
+	@Test
+	void testPrim() {
+
+		setUp6();
+		int[] arr = { -1, 0, 3, 4, 0 };
+		int[] prim = graph.prim();
+		boolean pass = true;
+		try {
+			for (int i = 0; i < arr.length; i++) {
+				if (arr[i] != prim[i]) {
+					System.out.println(i);
+					pass = false;
+				}
+			}
+		} catch (Exception e) {
+			pass = false;
+		}
+		assertTrue(pass);
 
 	}
 

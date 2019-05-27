@@ -285,6 +285,26 @@ class AdjacencyListGraphTest {
 		}
 	}
 
+	@Test
+	void testPrim() {
+
+		setUp6();
+		int[] arr = { -1, 0, 3, 4, 0 };
+		int[] prim = graph.prim();
+		boolean pass = true;
+		try {
+			for (int i = 0; i < arr.length; i++) {
+				if (arr[i] != prim[i]) {
+					pass = false;
+				}
+			}
+		} catch (Exception e) {
+			pass = false;
+		}
+		assertTrue(pass);
+
+	}
+
 	private double[][] auxFillMatrix(int rows, int columns, double[] m) {
 
 		int count = 0;

@@ -11,7 +11,7 @@ import exceptions.VertexDoesNotExistException;
 public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 
 	private boolean isDirected;
-	private PriorityQueue<Edge<T>>[][] adyacencyMatrix;
+	private PriorityQueue<Edge<T>>[][] adjacencyMatrix;
 	private ArrayList<Vertex<T>> vertexOrder;
 	private ArrayList<Edge<T>> edgeOrder;
 	private int numberOfEdge;
@@ -45,21 +45,18 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 
 			numberOfEdge++;
 
-			PriorityQueue<Edge<T>> temp = adyacencyMatrix[from][to];
+			PriorityQueue<Edge<T>> temp = adjacencyMatrix[from][to];
 			temp.add(edge);
 		} else {
 
 			Edge<T> edge = new Edge<T>(vertexOrder.get(from), vertexOrder.get(to), data, numberOfEdge);
-			numberOfEdge++;
 			Edge<T> edge2 = new Edge<T>(vertexOrder.get(to), vertexOrder.get(from), data, numberOfEdge);
 			edgeOrder.add(edge);
 			edgeOrder.add(edge2);
-
 			numberOfEdge++;
+			adjacencyMatrix[from][to].add(edge);
+			adjacencyMatrix[to][from].add(edge2);
 
-			PriorityQueue<Edge<T>> temp = adyacencyMatrix[from][to];
-			temp.add(edge);
-			temp.add(edge2);
 		}
 
 	}
@@ -92,7 +89,7 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 	@Override
 	public void deleteEdge(int from, int to, int id) {
 
-		PriorityQueue<Edge<T>> temp = adyacencyMatrix[from][to];
+		PriorityQueue<Edge<T>> temp = adjacencyMatrix[from][to];
 
 		if (isDirected) {
 			Edge<T> edge = searchEdgeById(id);
@@ -135,7 +132,7 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 
 				for (int i = 0; i < vertexOrder.size(); i++) {
 
-					PriorityQueue<Edge<T>> temp = adyacencyMatrix[current][i];
+					PriorityQueue<Edge<T>> temp = adjacencyMatrix[current][i];
 
 					if (!temp.isEmpty()) {
 
@@ -171,12 +168,10 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 
 		visited[n] = true;
 		ret.add(vertexOrder.get(n).getValue());
-		Iterator<Edge<T>> it = (Iterator<Edge<T>>) vertexOrder.get(n).getAdjacencyList().iterator();
-		while (it.hasNext()) {
+		for (int i = 0; i < vertexOrder.size(); i++) {
 
-			int v = searchPositionByVertex(it.next().getVertexTo());
-			if (!visited[v]) {
-				DFSRecursive(visited, v, ret);
+			if (!visited[i] && !adjacencyMatrix[n][i].isEmpty()) {
+				DFSRecursive(visited, i, ret);
 			}
 
 		}
@@ -187,27 +182,22 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 
 		PriorityQueue<Edge<T>>[][] newAdyacencyMatrix = new PriorityQueue[numberOfVertices][numberOfVertices];
 
-		if (adyacencyMatrix == null) {
+		if (adjacencyMatrix == null) {
 
-			PriorityQueue<Edge<T>> temp = new PriorityQueue<Edge<T>>(1000, new CompareEdgesByData());
-
-			newAdyacencyMatrix[0][0] = temp;
-
-			adyacencyMatrix = newAdyacencyMatrix;
+			newAdyacencyMatrix[0][0] = new PriorityQueue<Edge<T>>(1000, new CompareEdgesByData());
+			adjacencyMatrix = newAdyacencyMatrix;
 
 		} else {
 
-			for (int i = 0; i < adyacencyMatrix.length; i++) {
-				for (int j = 0; j < adyacencyMatrix.length; j++) {
+			for (int i = 0; i < adjacencyMatrix.length; i++) {
 
-					newAdyacencyMatrix[i][j] = adyacencyMatrix[i][j];
-
+				for (int j = 0; j < adjacencyMatrix[0].length; j++) {
+					newAdyacencyMatrix[i][j] = adjacencyMatrix[i][j];
 				}
+
 			}
-
 			fillNulls(newAdyacencyMatrix);
-
-			adyacencyMatrix = newAdyacencyMatrix;
+			adjacencyMatrix = newAdyacencyMatrix;
 
 		}
 
@@ -216,10 +206,9 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 	private void fillNulls(PriorityQueue<Edge<T>>[][] matrix) {
 
 		for (int i = 0; i < matrix.length; i++) {
-			for (int j = 0; j < matrix.length; j++) {
+			for (int j = 0; j < matrix[0].length; j++) {
 				if (matrix[i][j] == null) {
-					PriorityQueue<Edge<T>> temp = new PriorityQueue<Edge<T>>(1000, new CompareEdgesByData());
-					matrix[i][j] = temp;
+					matrix[i][j] = new PriorityQueue<Edge<T>>(1000, new CompareEdgesByData());
 				}
 			}
 		}
@@ -229,19 +218,19 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 
 		PriorityQueue<Edge<T>>[][] newAdyacencyMatrix = new PriorityQueue[newSize][newSize];
 
-		for (int i = 0; i < adyacencyMatrix.length; i++) {
-			for (int j = 0; j < adyacencyMatrix.length; j++) {
+		for (int i = 0; i < adjacencyMatrix.length; i++) {
+			for (int j = 0; j < adjacencyMatrix.length; j++) {
 
 				if (!(i == position || j == position)) {
 
 					if (i < position && j < position) {
-						newAdyacencyMatrix[i][j] = adyacencyMatrix[i][j];
+						newAdyacencyMatrix[i][j] = adjacencyMatrix[i][j];
 					} else if (j > position && i < position) {
-						newAdyacencyMatrix[i][j - 1] = adyacencyMatrix[i][j];
+						newAdyacencyMatrix[i][j - 1] = adjacencyMatrix[i][j];
 					} else if (i > position && j < position) {
-						newAdyacencyMatrix[i - 1][j] = adyacencyMatrix[i][j];
+						newAdyacencyMatrix[i - 1][j] = adjacencyMatrix[i][j];
 					} else {
-						newAdyacencyMatrix[i - 1][j - 1] = adyacencyMatrix[i][j];
+						newAdyacencyMatrix[i - 1][j - 1] = adjacencyMatrix[i][j];
 					}
 
 				}
@@ -249,7 +238,7 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 			}
 		}
 
-		adyacencyMatrix = newAdyacencyMatrix;
+		adjacencyMatrix = newAdyacencyMatrix;
 
 	}
 
@@ -275,7 +264,7 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 
 	public PriorityQueue<Edge<T>> getQueue(int row, int column) {
 
-		return adyacencyMatrix[row][column];
+		return adjacencyMatrix[row][column];
 
 	}
 
@@ -323,7 +312,7 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 		for (int i = 0; i < vertexOrder.size(); i++) {
 			for (int j = 0; j < vertexOrder.size(); j++) {
 
-				Edge<T> temp = adyacencyMatrix[i][j].peek();
+				Edge<T> temp = adjacencyMatrix[i][j].peek();
 
 				if (temp != null) {
 					lowestEdgesMatrix[i][j] = temp.getData();
@@ -353,10 +342,12 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 
 			int u = findMinKey(keys, setInTree);
 			if (u != -1) {
+				
+				setInTree[u] = true;
 
 				for (int v = 0; v < setInTree.length; v++) {
 
-					if (lowestEdgesMatrix[u][v] != 0 && setInTree[v] == false && lowestEdgesMatrix[u][v] < keys[v]) {
+					if (lowestEdgesMatrix[u][v] != 0 && !setInTree[v] && lowestEdgesMatrix[u][v] < keys[v]) {
 
 						keys[v] = lowestEdgesMatrix[u][v];
 						prev[v] = u;
@@ -364,7 +355,6 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 					}
 
 				}
-
 			}
 
 		}
@@ -418,11 +408,11 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 
 				for (int i = 0; i < vertexOrder.size(); i++) {
 
-					if (!adyacencyMatrix[pos][i].isEmpty()) {
+					if (!adjacencyMatrix[pos][i].isEmpty()) {
 
 						pq.add(vertexOrder.get(i));
 
-						Edge<T> temp = adyacencyMatrix[pos][i].peek();
+						Edge<T> temp = adjacencyMatrix[pos][i].peek();
 
 						double data = temp.getData();
 
