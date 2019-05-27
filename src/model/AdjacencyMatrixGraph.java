@@ -276,10 +276,83 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 
 	@Override
 	public AdjacencyListGraph<T> kruskal() throws VertexDoesNotExistException {
-
-		return null;
+		AdjacencyListGraph<T> newGraph = new AdjacencyListGraph<>(isDirected);
+		PriorityQueue<Edge<T>> queue = new PriorityQueue<Edge<T>>(numberOfEdge, new CompareEdgesByData<T>());
+		ArrayList<LinkedList<Vertex<T>>> DS = new ArrayList<LinkedList<Vertex<T>>>();
+		prepareKruskal(queue, DS);
+		while (!queue.isEmpty()) {
+			Edge<T> current = queue.poll();
+			if (!isConected(current.getVertexFrom(), current.getVertexTo(), DS)) {
+				Vertex<T> v1 = current.getVertexFrom();
+				Vertex<T> v2 = current.getVertexTo();
+				if (newGraph.getVertex(v1.getValue()) == null) {
+					newGraph.insertVertex(v1.getValue());
+				}
+				if (newGraph.getVertex(v2.getValue()) == null) {
+					newGraph.insertVertex(v2.getValue());
+				}
+				newGraph.insertEdge(searchPositionByVertex(v1), searchPositionByVertex(v2), current.getData());
+				connect(v1, v2, DS);
+			}
+		}
+		return newGraph;
 	}
 
+	private void prepareKruskal(PriorityQueue<Edge<T>> queue, ArrayList<LinkedList<Vertex<T>>> dS) {
+		for (int i = 0; i < vertexOrder.size(); i++) {
+			LinkedList<Vertex<T>> created = new LinkedList<Vertex<T>>();
+			created.add(vertexOrder.get(i));
+			dS.add(created);
+		}
+		for (int i = 0; i < edgeOrder.size(); i++) {
+			for (int j = 0; j < edgeOrder.size(); j++) {
+				if (isDirected) {
+					if (!queue.contains(edgeOrder.get(j))) {
+						queue.add(edgeOrder.get(j));
+					}
+				} else {
+					boolean contained = false;
+					Iterator<Edge<T>> it = queue.iterator();
+					while (it.hasNext()) {
+						Edge<T> comparison = it.next();
+						if (comparison.getId() == edgeOrder.get(j).getId()) {
+							contained = true;
+						}
+					}
+					if (!contained) {
+						queue.add(edgeOrder.get(j));
+					}
+				}
+			}
+		}
+	}
+
+	private boolean isConected(Vertex<T> v1, Vertex<T> v2, ArrayList<LinkedList<Vertex<T>>> DS) {
+		boolean conected = false;
+		for (int i = 0; i < DS.size(); i++) {
+			LinkedList<Vertex<T>> actual = (LinkedList<Vertex<T>>) DS.get(i);
+			if (actual.contains(v1) && actual.contains(v2)) {
+				conected = true;
+			}
+		}
+		return conected;
+	}
+
+	private void connect(Vertex<T> v1, Vertex<T> v2, ArrayList<LinkedList<Vertex<T>>> DS) {
+		LinkedList<Vertex<T>> toConnect1 = null;
+		LinkedList<Vertex<T>> toConnect2 = null;
+		for (int i = 0; i < DS.size(); i++) {
+			LinkedList<Vertex<T>> current = (LinkedList<Vertex<T>>) DS.get(i);
+			if (current.contains(v1)) {
+				toConnect1 = current;
+			} else if (current.contains(v2)) {
+				toConnect2 = current;
+			}
+		}
+		toConnect1.addAll(toConnect2);
+		DS.remove(toConnect2);
+	}
+	
 	@Override
 	public double[][] floydWarshal() {
 		getLowestEdgeMatrix();
