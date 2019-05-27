@@ -151,4 +151,17 @@ class AdyacencyMatrixGraphTest {
 
 	}
 
+	@Test
+	void testKruskal() {
+
+		setUp6();
+		try {
+			AdjacencyListGraph<String> newGraph = (AdjacencyListGraph<String>) graph.kruskal();
+			assertEquals(4, newGraph.getNumOfEdges());
+		} catch (VertexDoesNotExistException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
 }
