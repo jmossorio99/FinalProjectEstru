@@ -7,6 +7,8 @@ public class Vertex<T> implements IVertex<T> {
 	private T value;
 	private ArrayList<Edge<T>> adjacency;
 	private Double dist;
+	private double xCoordinate;
+	private double yCoordinate;
 
 	public Vertex(T value) {
 
@@ -45,6 +47,22 @@ public class Vertex<T> implements IVertex<T> {
 
 	public void setDist(double dist) {
 		this.dist = dist;
+	}
+
+	public double getxCoordinate() {
+		return xCoordinate;
+	}
+
+	public void setxCoordinate(double xCoordinate) {
+		this.xCoordinate = xCoordinate;
+	}
+
+	public double getyCoordinate() {
+		return yCoordinate;
+	}
+
+	public void setyCoordinate(double yCoordinate) {
+		this.yCoordinate = yCoordinate;
 	}
 
 	@Override
