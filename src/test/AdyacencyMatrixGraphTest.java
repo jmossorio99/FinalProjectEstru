@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import exceptions.VertexDoesNotExistException;
 import model.AdjacencyListGraph;
 import model.AdjacencyMatrixGraph;
-import model.Data;
 import model.Vertex;
 
 class AdyacencyMatrixGraphTest {
