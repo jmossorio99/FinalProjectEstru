@@ -150,6 +150,8 @@ class AdyacencyMatrixGraphTest {
 		setUp3();
 
 		graph.deleteEdge(0, 1, 0);
+		
+		assertTrue(graph.getEdges().size() == 4);
 
 	}
 
