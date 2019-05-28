@@ -8,26 +8,10 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="623.0" prefWidth="653.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainWindowController">
    <children>
-      <TitledPane animated="false" layoutY="14.0" prefHeight="271.0" prefWidth="236.0" text="Minimum Cost Per Person">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="289.0" prefWidth="208.0">
-               <children>
-                  <Label layoutX="14.0" layoutY="27.0" text="From:" />
-                  <TextField fx:id="fromTextField" layoutX="52.0" layoutY="23.0" prefHeight="26.0" prefWidth="134.0" />
-                  <Label layoutX="21.0" layoutY="67.0" text="To:" />
-                  <TextField fx:id="toTextField" layoutX="52.0" layoutY="63.0" prefHeight="26.0" prefWidth="134.0" />
-                  <Button layoutX="94.0" layoutY="106.0" mnemonicParsing="false" onAction="#goButtonPressed" text="Go!" />
-                  <Label layoutX="11.0" layoutY="145.0" text="Current City:" />
-                  <Label fx:id="cityLabel" layoutX="101.0" layoutY="145.0" text="N/A" />
-                  <Label layoutX="91.0" layoutY="179.0" text="Visit all!" />
-                  <Button layoutX="94.0" layoutY="212.0" mnemonicParsing="false" onAction="#allCityButtonPressed" text="Go!" />
-               </children>
-            </AnchorPane>
-        </content>
-      </TitledPane>
       <Pane fx:id="drawingPane" layoutX="244.0" layoutY="1.0" onMouseClicked="#createCityPressed" prefHeight="623.0" prefWidth="410.0">
          <children>
             <ImageView fitHeight="607.0" fitWidth="374.0" layoutX="6.0" layoutY="8.0">
@@ -36,5 +20,57 @@
                </image>
             </ImageView>
          </children></Pane>
+      <VBox layoutX="14.0" layoutY="14.0" prefHeight="615.0" prefWidth="222.0">
+         <children>
+            <TitledPane animated="false" prefHeight="207.0" prefWidth="236.0" text="Flight Creation">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="289.0" prefWidth="208.0">
+                     <children>
+                        <Label layoutX="14.0" layoutY="27.0" text="From:" />
+                        <TextField fx:id="fromTextField2" layoutX="52.0" layoutY="23.0" prefHeight="26.0" prefWidth="134.0" />
+                        <Label layoutX="21.0" layoutY="67.0" text="To:" />
+                        <TextField fx:id="toTextField2" layoutX="52.0" layoutY="63.0" prefHeight="26.0" prefWidth="134.0" />
+                        <Button layoutX="26.0" layoutY="103.0" mnemonicParsing="false" onAction="#createButtonPressed" text="Create" />
+                        <Label layoutX="11.0" layoutY="145.0" text="Current City:" />
+                        <Label fx:id="cityLabel1" layoutX="101.0" layoutY="145.0" text="N/A" />
+                        <Label layoutX="91.0" layoutY="179.0" text="Visit all!" />
+                        <Button layoutX="94.0" layoutY="212.0" mnemonicParsing="false" onAction="#allCityButtonPressed" text="Go!" />
+                        <Button layoutX="119.0" layoutY="103.0" mnemonicParsing="false" onAction="#deleteButtonPressed" text="Delete" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </TitledPane>
+            <TitledPane animated="false" prefHeight="271.0" prefWidth="236.0" text="Minimum Cost Per Person">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="289.0" prefWidth="208.0">
+                     <children>
+                        <Label layoutX="14.0" layoutY="27.0" text="From:" />
+                        <TextField fx:id="fromTextField" layoutX="52.0" layoutY="23.0" prefHeight="26.0" prefWidth="134.0" />
+                        <Label layoutX="21.0" layoutY="67.0" text="To:" />
+                        <TextField fx:id="toTextField" layoutX="52.0" layoutY="63.0" prefHeight="26.0" prefWidth="134.0" />
+                        <Button layoutX="11.0" layoutY="109.0" mnemonicParsing="false" onAction="#goButtonPressed" text="Go!" />
+                        <Label layoutX="11.0" layoutY="145.0" text="Current City:" />
+                        <Label fx:id="cityLabel" layoutX="101.0" layoutY="145.0" text="N/A" />
+                        <Label layoutX="54.0" layoutY="179.0" text="Minimum covering all" />
+                        <Button layoutX="94.0" layoutY="205.0" mnemonicParsing="false" onAction="#allCityButtonPressed" text="Go!" />
+                        <Label layoutX="70.0" layoutY="113.0" text="Cost:" />
+                        <Label fx:id="dijkstraCost" layoutX="136.0" layoutY="114.0" text="N/A" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </TitledPane>
+            <TitledPane animated="false" prefHeight="103.0" prefWidth="222.0" text="Extras">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button layoutX="15.0" layoutY="12.0" mnemonicParsing="false" onAction="#reload" text="Reload" />
+                        <Button layoutX="14.0" layoutY="47.0" mnemonicParsing="false" onAction="#changePressed" text="Change method" />
+                        <Label fx:id="currentLabel" layoutX="146.0" layoutY="51.0" text="Current" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </TitledPane>
+         </children>
+      </VBox>
    </children>
 </Pane>

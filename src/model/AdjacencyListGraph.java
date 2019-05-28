@@ -17,6 +17,10 @@ public class AdjacencyListGraph<T> implements IGenericGraph<T> {
 		vertices = new ArrayList<Vertex<T>>();
 	}
 
+	public int getNumberOfEdges() {
+		return numOfEdges;
+	}
+	
 	@Override
 	public void insertVertex(T value, double xCoordinate, double yCoordinate) {
 

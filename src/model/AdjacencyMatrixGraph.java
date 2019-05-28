@@ -25,6 +25,10 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 
 	}
 
+	public int getNumberOfEdge() {
+		return numberOfEdge;
+	}
+	
 	@Override
 	public void insertVertex(T value, double xCoordinate, double yCoordinate) {
 
@@ -517,13 +521,13 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 		return vertexOrder.indexOf(vertex);
 	}
 
-	private int searchPositionByCity(T city) {
+	public int searchPositionByCity(T city) {
 		int position = -1;
 		boolean stop = false;
 
 		for (int i = 0; i < vertexOrder.size() && !stop; i++) {
 			Vertex<T> temp = vertexOrder.get(i);
-			if (city == temp.getValue()) {
+			if (city.equals(temp.getValue())) {
 				position = i;
 				stop = true;
 			}
@@ -531,4 +535,5 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 
 		return position;
 	}
+	
 }
