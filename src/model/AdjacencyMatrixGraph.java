@@ -470,66 +470,38 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 	@Override
 	public double[][] Dijkstra(T city) {
 
-		boolean[] visited = new boolean[vertexOrder.size()];
-		double[][] matrix = new double[2][vertexOrder.size()];
-		int position = searchPositionByCity(city);
-		PriorityQueue<Vertex<T>> pq = new PriorityQueue<Vertex<T>>(10000,new CompareVertexByDistance());
-		pq.add(vertexOrder.get(position));
-
-		for (int i = 0; i < vertexOrder.size(); i++) {
-			matrix[0][i] = -1;
-
-			if (i == position) {
-				matrix[1][i] = 0;
-			} else {
-				matrix[1][i] = Double.MAX_VALUE;
+		double[][] result = new double[2][vertexOrder.size()];
+		Vertex<T> sartPoint = vertexOrder.get(searchPositionByCity(city));
+		int originPos = searchPositionByCity(city);
+		result[0][originPos] = 0;
+		result[1][originPos] = -1;
+		for (int i = 0; i < result[0].length; i++) {
+			if (result[0][i] == 0 && i != originPos) {
+				result[0][i] = Double.MAX_VALUE;
+				result[1][i] = -1;
 			}
+			vertexOrder.get(i).setDist(result[0][i]);
 		}
-      
-		
-		while (!pq.isEmpty()) {
-
-			Vertex<T> current = pq.poll();
-			int pos = searchPositionByVertex(current);
-
-			
-			if(visited[pos]==false) {
-				
-				visited[pos]=true;
-				
-				for(int i=0;i<matrix.length;i++) {
-										
-					
-					if(!adjacencyMatrix[pos][i].isEmpty()) {
-					
-						Edge<T> adjacency = adjacencyMatrix[pos][i].peek();
-						
-						double weight = adjacency.getData()+matrix[1][pos];
-						
-						if(weight<0) {
-							weight=Double.MAX_VALUE;
-						}
-						
-						if(matrix[1][i]>weight) {
-							matrix[1][i]=weight;
-							matrix[0][i]=pos;
-							
-							Vertex<T> vertex = vertexOrder.get(i);
-							vertex.setDist(weight);
-							pq.offer(vertex);
-							
-						} 
-						
-						
+		PriorityQueue<Vertex<T>> queue = new PriorityQueue<Vertex<T>>(vertexOrder.size(), new CompareVertexByDistance());
+		for (int i = 0; i < vertexOrder.size(); i++) {
+			queue.add(vertexOrder.get(i));
+		}
+		while (!queue.isEmpty()) {
+			Vertex<T> actual = queue.poll();
+			int currentIt = searchPositionByCity(actual.getValue());
+			for (int i = 0; i < adjacencyMatrix[currentIt].length; i++) {
+				Edge<T> connection = adjacencyMatrix[currentIt][i].peek();
+				if(connection != null) {
+					int comparison = searchPositionByCity((connection.getVertexTo().getValue()));
+					if (result[0][currentIt] + connection.getData() < result[0][comparison]) {
+						result[0][comparison] = result[0][currentIt] + connection.getData();
+						connection.getVertexTo().setDist(result[0][comparison]);
+						result[1][comparison] = currentIt;
 					}
 				}
-				
 			}
 		}
-		
-		System.out.println("devuelvo");
-
-		return matrix;
+		return result;
 	}
 
 	private int searchPositionByVertex(Vertex<T> vertex) {
