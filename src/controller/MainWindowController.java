@@ -72,9 +72,7 @@ public class MainWindowController implements Initializable {
 				line.setEndX(toAdj.getxCoordinate());
 				line.setEndY(toAdj.getyCoordinate());
 				line.setStroke(Color.DODGERBLUE);
-				line.setId("l"+(colombianMapAdj.getNumberOfEdges() - 1));
 				Label label = new Label(""+result.get());
-				label.setId("la"+(colombianMapAdj.getNumberOfEdges() - 1));
 				label.setLayoutX(((line.getStartX() + line.getEndX()) / 2)-10);
 				label.setLayoutY(((line.getStartY() + line.getEndY()) / 2)-10);
 				drawingPane.getChildren().addAll(line, label);
@@ -85,11 +83,6 @@ public class MainWindowController implements Initializable {
 			}
 		}
 	}
-	
-	@FXML
-    void deleteButtonPressed(ActionEvent event) {
-		
-    }
 	
 	@FXML
     void changePressed(ActionEvent event) {
@@ -114,7 +107,7 @@ public class MainWindowController implements Initializable {
 			Vertex<String> to = colombianMapAdj.getVertex(toString);
 			int fromInt = colombianMapAdj.findVertexIndex(from);
 			int toInt = colombianMapAdj.findVertexIndex(to);
-			dijkstraCost.setText(""+result[1][toInt]);
+			dijkstraCost.setText(""+result[0][toInt]);
 			boolean finishedPath = false;
 			int current = toInt;
 			while(!finishedPath) {
@@ -147,6 +140,40 @@ public class MainWindowController implements Initializable {
 			}
 		}else {
 			double[][] result = colombianMapMat.Dijkstra(fromString);
+			int fromInt = colombianMapMat.searchPositionByCity(fromString);
+			int toInt = colombianMapMat.searchPositionByCity(toString);
+			dijkstraCost.setText(""+result[0][toInt]);
+			boolean finishedPath = false;
+			int current = toInt;
+			while(!finishedPath) {
+				if(result[1][current] == fromInt) {
+					finishedPath = true;
+					Vertex<String> pass = colombianMapMat.getVertices().get(current);
+					Vertex<String> end = colombianMapMat.getVertices().get(fromInt);
+					for(Edge<String> edge : colombianMapMat.getEdges()) {
+						if(edge.getVertexFrom().equals(pass) && edge.getVertexTo().equals(end)) {
+							Line line = new Line();
+							line.setStartX(pass.getxCoordinate());
+							line.setStartY(pass.getyCoordinate());
+							line.setEndX(edge.getVertexTo().getxCoordinate());
+							line.setEndY(edge.getVertexTo().getyCoordinate());
+							line.setStroke(Color.CRIMSON);
+							drawingPane.getChildren().add(line);
+						}
+					}
+				}else {
+					Vertex<String> pass = colombianMapMat.getVertices().get(current);
+					Vertex<String> pass2 = colombianMapMat.getVertices().get((int) result[1][current]);
+					Line line = new Line();
+					line.setStartX(pass.getxCoordinate());
+					line.setStartY(pass.getyCoordinate());
+					line.setEndX(pass2.getxCoordinate());
+					line.setEndY(pass2.getyCoordinate());
+					line.setStroke(Color.CRIMSON);
+					drawingPane.getChildren().add(line);
+					current = (int) result[1][current];
+				}
+			}
 		}
 	}
 
@@ -187,7 +214,7 @@ public class MainWindowController implements Initializable {
 					for (Edge<String> edge : city.getAdjacencyList()) {
 						if (!drawn.contains(edge.getId())) {
 							Line line = new Line();
-							line.setStroke(Color.TOMATO);
+							line.setStroke(Color.LIME);
 							line.setStartX(edge.getVertexFrom().getxCoordinate());
 							line.setStartY(edge.getVertexFrom().getyCoordinate());
 							line.setEndX(edge.getVertexTo().getxCoordinate());
@@ -297,7 +324,6 @@ public class MainWindowController implements Initializable {
 						line.setStartY(edge.getVertexFrom().getyCoordinate());
 						line.setEndX(edge.getVertexTo().getxCoordinate());
 						line.setEndY(edge.getVertexTo().getyCoordinate());
-						line.setId("l"+(edge.getId()));
 						Label label = new Label("" + edge.getData());
 						label.setLayoutX(((line.getStartX() + line.getEndX()) / 2)-10);
 						label.setLayoutY(((line.getStartY() + line.getEndY()) / 2)-10);
@@ -319,7 +345,7 @@ public class MainWindowController implements Initializable {
 				drawingPane.getChildren().add(circle);
 				circle.setOnMouseEntered(mouseHandler);
 				drawingPane.setOnMouseClicked(mouseHandler);
-				for (Edge<String> edge : city.getAdjacencyList()) {
+				for (Edge<String> edge : colombianMapMat.getEdges()) {
 					if (!drawn.contains(edge.getId())) {
 						Line line = new Line();
 						line.setStroke(Color.DODGERBLUE);

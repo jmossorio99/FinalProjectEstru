@@ -30,12 +30,11 @@
                         <TextField fx:id="fromTextField2" layoutX="52.0" layoutY="23.0" prefHeight="26.0" prefWidth="134.0" />
                         <Label layoutX="21.0" layoutY="67.0" text="To:" />
                         <TextField fx:id="toTextField2" layoutX="52.0" layoutY="63.0" prefHeight="26.0" prefWidth="134.0" />
-                        <Button layoutX="26.0" layoutY="103.0" mnemonicParsing="false" onAction="#createButtonPressed" text="Create" />
+                        <Button layoutX="86.0" layoutY="104.0" mnemonicParsing="false" onAction="#createButtonPressed" text="Create" />
                         <Label layoutX="11.0" layoutY="145.0" text="Current City:" />
                         <Label fx:id="cityLabel1" layoutX="101.0" layoutY="145.0" text="N/A" />
                         <Label layoutX="91.0" layoutY="179.0" text="Visit all!" />
                         <Button layoutX="94.0" layoutY="212.0" mnemonicParsing="false" onAction="#allCityButtonPressed" text="Go!" />
-                        <Button layoutX="119.0" layoutY="103.0" mnemonicParsing="false" onAction="#deleteButtonPressed" text="Delete" />
                      </children>
                   </AnchorPane>
                </content>
