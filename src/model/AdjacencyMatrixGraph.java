@@ -469,7 +469,7 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 
 	@Override
 	public double[][] Dijkstra(T city) {
-
+		boolean[] revised = new boolean[vertexOrder.size()];
 		double[][] result = new double[2][vertexOrder.size()];
 		Vertex<T> sartPoint = vertexOrder.get(searchPositionByCity(city));
 		int originPos = searchPositionByCity(city);
@@ -483,20 +483,22 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 			vertexOrder.get(i).setDist(result[0][i]);
 		}
 		PriorityQueue<Vertex<T>> queue = new PriorityQueue<Vertex<T>>(vertexOrder.size(), new CompareVertexByDistance());
-		for (int i = 0; i < vertexOrder.size(); i++) {
-			queue.add(vertexOrder.get(i));
-		}
+		queue.add(sartPoint);
 		while (!queue.isEmpty()) {
 			Vertex<T> actual = queue.poll();
 			int currentIt = searchPositionByCity(actual.getValue());
+			revised[currentIt] = true;
 			for (int i = 0; i < adjacencyMatrix[currentIt].length; i++) {
 				Edge<T> connection = adjacencyMatrix[currentIt][i].peek();
 				if(connection != null) {
 					int comparison = searchPositionByCity((connection.getVertexTo().getValue()));
-					if (result[0][currentIt] + connection.getData() < result[0][comparison]) {
-						result[0][comparison] = result[0][currentIt] + connection.getData();
-						connection.getVertexTo().setDist(result[0][comparison]);
-						result[1][comparison] = currentIt;
+					if(!revised[comparison]) {
+						if (result[0][currentIt] + connection.getData() < result[0][comparison]) {
+							result[0][comparison] = result[0][currentIt] + connection.getData();
+							connection.getVertexTo().setDist(result[0][comparison]);
+							result[1][comparison] = currentIt;
+							queue.offer(connection.getVertexTo());
+						}
 					}
 				}
 			}

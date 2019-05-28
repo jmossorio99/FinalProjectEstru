@@ -2,7 +2,7 @@ package model;
 
 import java.util.Comparator;
 
-public class CompareVertexByDistance implements Comparator<Vertex>{
+public class CompareVertexByDistance<T> implements Comparator<Vertex>{
 
 	@Override
 	public int compare(Vertex v1, Vertex v2) {

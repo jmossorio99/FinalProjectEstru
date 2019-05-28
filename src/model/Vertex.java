@@ -2,11 +2,11 @@ package model;
 
 import java.util.ArrayList;
 
-public class Vertex<T> implements IVertex<T> {
+public class Vertex<T> implements IVertex<T> , Comparable<Vertex<T>>{
 
 	private T value;
 	private ArrayList<Edge<T>> adjacency;
-	private Double dist;
+	private double dist;
 	private double xCoordinate;
 	private double yCoordinate;
 
@@ -103,7 +103,12 @@ public class Vertex<T> implements IVertex<T> {
 	}
 
 	public int compareTo(Vertex v2) {
-		return this.dist.compareTo(v2.getDist());
+		if (this.dist > v2.getDist()) {
+			return 1;
+		} else if (this.dist < v2.getDist()) {
+			return -1;
+		}
+		return 0;
 	}
 
 }
