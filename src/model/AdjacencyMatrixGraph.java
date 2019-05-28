@@ -492,36 +492,42 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 			Vertex<T> current = pq.poll();
 			int pos = searchPositionByVertex(current);
 
-			if (visited[pos] == false) {
-
-				visited[pos] = true;
-
-				for (int i = 0; i < vertexOrder.size(); i++) {
-
-					if (!adjacencyMatrix[pos][i].isEmpty()) {
-
-						Edge<T> temp = adjacencyMatrix[pos][i].peek();
+			
+			if(visited[pos]==false) {
+				
+				visited[pos]=true;
+				
+				for(int i=0;i<matrix.length;i++) {
+										
+					
+					if(!adjacencyMatrix[pos][i].isEmpty()) {
+					
+						Edge<T> adjacency = adjacencyMatrix[pos][i].peek();
 						
-						Vertex<T> vertex = vertexOrder.get(i);
+						double weight = adjacency.getData()+matrix[1][pos];
 						
-						double data = temp.getData()+matrix[1][pos];
-
-						vertex.setDist(data);
-						
-						pq.offer(vertex);
-                       
-						if (data < matrix[1][i]) {
-							matrix[0][i] = pos;
-							matrix[1][i] = data;
+						if(weight<0) {
+							weight=Double.MAX_VALUE;
 						}
-
+						
+						if(matrix[1][i]>weight) {
+							matrix[1][i]=weight;
+							matrix[0][i]=pos;
+							
+							Vertex<T> vertex = vertexOrder.get(i);
+							vertex.setDist(weight);
+							pq.offer(vertex);
+							
+						} 
+						
+						
 					}
-
 				}
-
+				
 			}
-
 		}
+		
+		System.out.println("devuelvo");
 
 		return matrix;
 	}

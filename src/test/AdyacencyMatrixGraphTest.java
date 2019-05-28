@@ -208,7 +208,7 @@ class AdyacencyMatrixGraphTest {
 		
 		double[][] matrix = graph.Dijkstra("Bogota");
 		
-		assertTrue(matrix[2][0]==750000.0 && matrix[2][1]==250000.0 && matrix[2][2]==0.0);
+		assertTrue(matrix[1][0]==750000.0 && matrix[1][1]==250000.0 && matrix[1][2]==0.0);
 	}
 	
 	@Test
