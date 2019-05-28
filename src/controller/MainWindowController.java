@@ -72,9 +72,9 @@ public class MainWindowController implements Initializable {
 				line.setEndX(toAdj.getxCoordinate());
 				line.setEndY(toAdj.getyCoordinate());
 				line.setStroke(Color.DODGERBLUE);
-				line.setId(""+(colombianMapAdj.getNumberOfEdges() - 1));
+				line.setId("l"+(colombianMapAdj.getNumberOfEdges() - 1));
 				Label label = new Label(""+result.get());
-				label.setId(""+(colombianMapAdj.getNumberOfEdges() - 1));
+				label.setId("la"+(colombianMapAdj.getNumberOfEdges() - 1));
 				label.setLayoutX(((line.getStartX() + line.getEndX()) / 2)-10);
 				label.setLayoutY(((line.getStartY() + line.getEndY()) / 2)-10);
 				drawingPane.getChildren().addAll(line, label);
@@ -297,6 +297,7 @@ public class MainWindowController implements Initializable {
 						line.setStartY(edge.getVertexFrom().getyCoordinate());
 						line.setEndX(edge.getVertexTo().getxCoordinate());
 						line.setEndY(edge.getVertexTo().getyCoordinate());
+						line.setId("l"+(edge.getId()));
 						Label label = new Label("" + edge.getData());
 						label.setLayoutX(((line.getStartX() + line.getEndX()) / 2)-10);
 						label.setLayoutY(((line.getStartY() + line.getEndY()) / 2)-10);
