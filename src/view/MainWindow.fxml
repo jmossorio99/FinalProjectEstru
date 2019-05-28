@@ -8,11 +8,10 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.shape.Circle?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="623.0" prefWidth="653.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainWindowController">
    <children>
-      <TitledPane animated="false" layoutY="14.0" prefHeight="317.0" prefWidth="236.0" text="Information">
+      <TitledPane animated="false" layoutY="14.0" prefHeight="271.0" prefWidth="236.0" text="Minimum Cost Per Person">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="289.0" prefWidth="208.0">
                <children>
@@ -29,14 +28,13 @@
             </AnchorPane>
         </content>
       </TitledPane>
-      <Pane fx:id="drawingPane" layoutX="244.0" layoutY="1.0" prefHeight="623.0" prefWidth="410.0">
+      <Pane fx:id="drawingPane" layoutX="244.0" layoutY="1.0" onMouseClicked="#createCityPressed" prefHeight="623.0" prefWidth="410.0">
          <children>
             <ImageView fitHeight="607.0" fitWidth="374.0" layoutX="6.0" layoutY="8.0">
                <image>
                   <Image url="@../../images/Colombia.png" />
                </image>
             </ImageView>
-            <Circle fill="DODGERBLUE" layoutX="112.0" layoutY="229.0" radius="4.0" stroke="BLACK" strokeType="INSIDE" />
          </children></Pane>
    </children>
 </Pane>

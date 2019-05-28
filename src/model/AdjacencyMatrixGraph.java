@@ -285,13 +285,21 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 			if (!isConected(current.getVertexFrom(), current.getVertexTo(), DS)) {
 				Vertex<T> v1 = current.getVertexFrom();
 				Vertex<T> v2 = current.getVertexTo();
+				Vertex<T> v11 = null;
+				Vertex<T> v22 = null;
 				if (newGraph.getVertex(v1.getValue()) == null) {
 					newGraph.insertVertex(v1.getValue(), v1.getxCoordinate(), v1.getyCoordinate());
+					v11 = newGraph.getVertices().get(newGraph.getVertices().size() - 1);
+				}else {
+					v11 = newGraph.getVertex(v1.getValue());
 				}
 				if (newGraph.getVertex(v2.getValue()) == null) {
 					newGraph.insertVertex(v2.getValue(), v2.getxCoordinate(), v2.getyCoordinate());
+					v22 = newGraph.getVertices().get(newGraph.getVertices().size() - 1);
+				}else {
+					v22 = newGraph.getVertex(v2.getValue());
 				}
-				newGraph.insertEdge(searchPositionByVertex(v1), searchPositionByVertex(v2), current.getData());
+				newGraph.insertEdge(newGraph.findVertexIndex(v11), newGraph.findVertexIndex(v22), current.getData());
 				connect(v1, v2, DS);
 			}
 		}
