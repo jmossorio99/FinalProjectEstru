@@ -404,6 +404,10 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 				} else {
 					lowestEdgesMatrix[i][j] = Double.MAX_VALUE;
 				}
+				
+				if(i==j) {
+					lowestEdgesMatrix[i][j]=0.0;
+				}
 			}
 		}
 
@@ -469,7 +473,7 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 		boolean[] visited = new boolean[vertexOrder.size()];
 		double[][] matrix = new double[2][vertexOrder.size()];
 		int position = searchPositionByCity(city);
-		PriorityQueue<Vertex<T>> pq = new PriorityQueue<Vertex<T>>();
+		PriorityQueue<Vertex<T>> pq = new PriorityQueue<Vertex<T>>(10000,new CompareVertexByDistance());
 		pq.add(vertexOrder.get(position));
 
 		for (int i = 0; i < vertexOrder.size(); i++) {
@@ -481,7 +485,8 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 				matrix[1][i] = Double.MAX_VALUE;
 			}
 		}
-
+      
+		
 		while (!pq.isEmpty()) {
 
 			Vertex<T> current = pq.poll();
@@ -495,14 +500,18 @@ public class AdjacencyMatrixGraph<T> implements IGenericGraph<T> {
 
 					if (!adjacencyMatrix[pos][i].isEmpty()) {
 
-						pq.add(vertexOrder.get(i));
-
 						Edge<T> temp = adjacencyMatrix[pos][i].peek();
+						
+						Vertex<T> vertex = vertexOrder.get(i);
+						
+						double data = temp.getData()+matrix[1][pos];
 
-						double data = temp.getData();
-
+						vertex.setDist(data);
+						
+						pq.offer(vertex);
+                       
 						if (data < matrix[1][i]) {
-							matrix[0][i] = i;
+							matrix[0][i] = pos;
 							matrix[1][i] = data;
 						}
 

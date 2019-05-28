@@ -200,5 +200,25 @@ class AdyacencyMatrixGraphTest {
 		assertTrue(pass);
 
 	}
-
+	
+	@Test
+	void testDijkstra() {
+	
+		setUp5();
+		
+		double[][] matrix = graph.Dijkstra("Bogota");
+		
+		assertTrue(matrix[2][0]==750000.0 && matrix[2][1]==250000.0 && matrix[2][2]==0.0);
+	}
+	
+	@Test
+	void testFloyd() {
+	
+		setUp5();
+		
+		double [][] matrix=graph.floydWarshal();
+		
+		assertTrue(matrix[0][0]==0.0 && matrix[0][1]==500000.0 && matrix[0][2]==Double.MAX_VALUE && matrix[1][0]==500000.0 && matrix[1][1]==0.0 && matrix[1][2]==Double.MAX_VALUE && matrix[2][0]==750000.0 && matrix[2][1]==250000.0 && matrix[2][2]==0.0);
+		
+	}
 }
